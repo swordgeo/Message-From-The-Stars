@@ -1,29 +1,57 @@
 import http.client
 import json
 
-conn = http.client.HTTPSConnection("twinword-word-associations-v1.p.rapidapi.com")
+ass_conn = http.client.HTTPSConnection("twinword-word-associations-v1.p.rapidapi.com")
+syn_conn = http.client.HTTPSConnection("languagetools.p.rapidapi.com")
 
-headers = {
+ass_headers = {
     'x-rapidapi-key': "83a7dc6a73msh32ae7d9530874bep17eeb6jsne96b7d24ddd8",
     'x-rapidapi-host': "twinword-word-associations-v1.p.rapidapi.com"
 }
 
-def get_word_associations(word):
+syn_headers = {
+    'x-rapidapi-key': "83a7dc6a73msh32ae7d9530874bep17eeb6jsne96b7d24ddd8",
+    'x-rapidapi-host': "languagetools.p.rapidapi.com"
+}
+
+def get_word_associations(keyword):
   # Pass in the word in question, it will return a list of word associations that are graded by their alleged relation to the word in question. 
   # We can allow this to be a slight factor but the associative grading isn't that good IMO
-  conn.request("GET", f"/associations/?entry={word}", headers=headers)
+  ass_conn.request("GET", f"/associations/?entry={keyword}", headers=ass_headers)
 
-  res = conn.getresponse()
+  res = ass_conn.getresponse()
   data = res.read()
 
   decoded_data = data.decode("utf-8")
   parsed_json = json.loads(decoded_data)
 
   associations_scored = parsed_json["associations_scored"]
+  ass_array = []
+  for word, score in associations_scored.items():
+      ass_array.append(word)
+  #  print(f"{word}: {score}")
+  # print(ass_array)
+
+  return ass_array
+  # A dictionary list of two items apiece
+
+def get_synonyms(word):
+  # Pass in the word in question, it will return a list of word associations that are graded by their alleged relation to the word in question. 
+  # We can allow this to be a slight factor but the associative grading isn't that good IMO
+  syn_conn.request("GET", f"/synonyms/{word}", headers=syn_headers)
+
+  res = syn_conn.getresponse()
+  data = res.read()
+
+  decoded_data = data.decode("utf-8")
+  parsed_json = json.loads(decoded_data)
+  # print(parsed_json['synonyms'])
+  syn_array = parsed_json['synonyms']
+  # associations_scored = parsed_json["associations_scored"]
   # for word, score in associations_scored.items():
   #  print(f"{word}: {score}")
 
-  return associations_scored
+  return syn_array
   # A dictionary list of two items apiece
 
 
@@ -55,19 +83,26 @@ def get_letters():
     return trust_letters, amplify_letters, suspicion_letter
 
 
-def grade_word(word_associations, trust_letters, amplify_letters, suspicion_letter):
+def grade_word(test_words, trust_letters, amplify_letters, suspicion_letter):
     graded_associations = []  # List to store the graded associations
     
     # Iterate through each association
-    for assoc_word, score in word_associations.items():
+    for word in test_words:
+        if ' ' in word:
+            continue  # Skip entries with spaces
+        
+        if any(assoc['suggestion'] == word for assoc in graded_associations):
+            continue  # Skip duplicate entries
+
         grade = 0  # Initialize the grade for this association
         
         # Count occurrences of trust, amplify, and suspicion letters
-        trust_count = sum([assoc_word.count(letter) for letter in trust_letters])
+        trust_count = sum([word.count(letter) for letter in trust_letters])
         if trust_count == 0:
             continue # No trust letters means grade = 0; skip it
-        amplify_count = sum([assoc_word.count(letter) for letter in amplify_letters])
-        suspicion_count = assoc_word.count(suspicion_letter)
+        
+        amplify_count = sum([word.count(letter) for letter in amplify_letters])
+        suspicion_count = word.count(suspicion_letter)
         
         # Apply grading rules
         grade += trust_count * 1  # Every instance of a trust letter adds 1 to the grade
@@ -76,21 +111,19 @@ def grade_word(word_associations, trust_letters, amplify_letters, suspicion_lett
             grade *= -1
         
         # Calculate density
-        density = (trust_count + amplify_count + suspicion_count) / len(assoc_word)
+        density = (trust_count + amplify_count + suspicion_count) / len(word)
         
         # Store the original score, the associated word, the new grade, and the density
         graded_associations.append({
-            "original_score": score,
-            "associated_word": assoc_word,
-            "new_grade": grade,
+            "suggestion": word,
+            "grade": grade,
             "density": density,
-            "weight": density*2 + score # the density should be most important; score is less than 1 so this reduces the score's contribution
         })
     
     # Sort graded_associations by 'weight' in descending order
-    sorted_graded_associations = sorted(graded_associations, key=lambda x: x['weight'], reverse=True)
+    sorted_word_suggestions = sorted(graded_associations, key=lambda x: x['density'], reverse=True)
 
-    return sorted_graded_associations
+    return sorted_word_suggestions
 
 
 def get_words():
@@ -103,9 +136,10 @@ def get_words():
         try:
             # Attempt to get word associations
             word_associations = get_word_associations(word)
+            word_synonyms = get_synonyms(word)
             
             # If successful, add the word to the collected_words list
-            collected_words.append((word, word_associations))
+            collected_words.append((word, word_associations+word_synonyms))
             
             # Optionally, print the associations to confirm success
             # print(f"Associations for '{word}': {word_associations}")
@@ -114,7 +148,7 @@ def get_words():
             # Handle any exceptions raised by get_word_associations
             print(f"An error occurred while getting associations for '{word}'. Please try a different word.")
             print(e)  # Optionally, print the exception details for debugging
-            
+    print(collected_words)
     return collected_words
 
 
@@ -138,16 +172,18 @@ def main():
     
     # Sort the graded associations for each word by 'weight' in descending order
     for original_word, graded_associations in word_to_graded_associations.items():
-        sorted_graded_associations = sorted(graded_associations, key=lambda x: x['weight'], reverse=True)
+        sorted_graded_associations = sorted(graded_associations, key=lambda x: x['density'], reverse=True)
         
         # Display the top 10 results for each original word
         print(f"\nOriginal Word: {original_word}")
-        for i, item in enumerate(sorted_graded_associations[:15]):
-            print(f"Rank {i+1}: Original Score: {item['original_score']:.2f}, Associated Word: {item['associated_word']}, New Grade: {item['new_grade']}, Density: {item['density']:.2f}, Weight: {item['weight']:.2f}") # With all the bells and whistles
-            # print(f"Suggestion: {item['associated_word']}, Score: {item['new_grade']}")
+        for i, item in enumerate(sorted_graded_associations[:25]):
+            print(f"Rank {i+1}: Suggested Word: {item['suggestion']}, Grade: {item['grade']}, Density: {item['density']:.2f}") # With all the bells and whistles
+            # print(f"Suggestion: {item['suggestion']}, Score: {item['grade']}")
         print("-" * 40)  # Separator line for readability
 
 
 
 if __name__ == '__main__':
     main()
+    # get_word_associations("dog")
+    # get_synonyms("dog")
