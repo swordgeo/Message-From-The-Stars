@@ -44,7 +44,6 @@ def generatePossiblePuzzleLetters():
     return possiblePuzzleLetters
 
 
-
 def prettyPrintPossiblePuzzleLetters(possiblePuzzleLetters):
     for idx, puzzleLetter in enumerate(constants.PUZZLE_LETTERS):
         letterCategory = puzzleLetter["category"]
@@ -57,5 +56,54 @@ def prettyPrintPossiblePuzzleLetters(possiblePuzzleLetters):
 
 
 
-prettyPrintPossiblePuzzleLetters(generatePossiblePuzzleLetters())
+def process_word(graded_word, possiblePuzzleLetters):
+    
+    # find correct way to call the specific suspicion letter array
+    # print(possiblePuzzleLetters) # not enumerated, pPL is just a nested array
 
+    # Unpacking the key and value
+    # l_word, grade = graded_word --- dictionary edition
+    l_word, grade = next(iter(graded_word.items()))
+    word = l_word.upper()
+    print(word)
+    print(grade)
+    print(possiblePuzzleLetters[5])
+    # return
+
+    if grade > 0:  # positive
+            # remove all present letters from suspicion
+            letters_to_remove = set(word)
+            possiblePuzzleLetters[5] = [letter for letter in possiblePuzzleLetters[5] if letter not in letters_to_remove]
+            # ungrade_word()
+    elif grade < 0:  # negative
+            # remove all NON-present letters from suspicion
+            letters_to_keep = set(word)
+            possiblePuzzleLetters[5] = [letter for letter in possiblePuzzleLetters[5] if letter in letters_to_keep]
+            # ungrade_word()
+    else: # grade 0
+         # remove all present letters from trust
+         letters_to_remove = set(word)
+         possiblePuzzleLetters[0] = [letter for letter in possiblePuzzleLetters[0] if letter not in letters_to_remove]
+         possiblePuzzleLetters[1] = [letter for letter in possiblePuzzleLetters[1] if letter not in letters_to_remove]
+         possiblePuzzleLetters[2] = [letter for letter in possiblePuzzleLetters[2] if letter not in letters_to_remove]
+
+
+    # return possiblePuzzleLetters
+    # no need, let's allow the Python array pointer bug to be our feature
+
+possiblePuzzleLetters = generatePossiblePuzzleLetters()
+graded_word = {"shithead": 16}
+
+process_word(graded_word, possiblePuzzleLetters)
+print(possiblePuzzleLetters[5])
+
+word_two = {"turd": -3}
+process_word(word_two, possiblePuzzleLetters)
+print(possiblePuzzleLetters[5])
+
+word_three = {"uncopyrightable": 0}
+process_word(word_three, possiblePuzzleLetters)
+print(possiblePuzzleLetters[0])
+print(possiblePuzzleLetters[1])
+print(possiblePuzzleLetters[2])
+# prettyPrintPossiblePuzzleLetters(generatePossiblePuzzleLetters())
