@@ -32,7 +32,7 @@ import constants
 # a x 2
 
 
-def generatePossiblePuzzleLetters():
+def initPossiblePuzzleLetters():
     possiblePuzzleLetters = []
 
     for puzzleLetter in constants.PUZZLE_LETTERS:
@@ -55,7 +55,52 @@ def prettyPrintPossiblePuzzleLetters(possiblePuzzleLetters):
         print(sortedPuzzleLetters)
 
 
+def ungrade_word(word, score):
+    # determine the possible combinations of trust/amplify/suspicion letters
+    test = 2
+
+    # create every possible world where the score is valid. what is the brute force complexity?
+    # TRUST 0: 9
+    # TRUST 1: 11/17
+    # TRUST 2: 17
+    # AMPLIFY 3: 9
+    # AMPLIFY 4: 17
+    # SUSPICION 5: 26
+    # about 7 million
 
 
-prettyPrintPossiblePuzzleLetters(generatePossiblePuzzleLetters())
+
+    # # count the number of trust/amplify/suspicion letters
+    # letterCount = {
+    #     constants.LetterCategory.TRUST: 0,
+    #     constants.LetterCategory.AMPLIFY: 0,
+    #     constants.LetterCategory.SUSPICION: 0,
+    # }
+    # for idx, letter in enumerate(letter_group):
+    #     category = constants.PUZZLE_LETTERS[idx]["category"]
+    #     letterCount[category] += word.count(letter)
+
+    # # Apply grading rules
+    # score = 0
+    # score += letterCount[constants.LetterCategory.TRUST]  # Every instance of a trust letter adds 1 to the grade
+    # score *= 2 ** letterCount[constants.LetterCategory.AMPLIFY]  # Every instance of an amplify letter doubles the grade
+    # if letterCount[constants.LetterCategory.SUSPICION] > 0:  # Any instance of the suspicion letter makes the grade negative
+    #     score *= -1
+    # return score
+
+
+possibleLetters = initPossiblePuzzleLetters()
+prettyPrintPossiblePuzzleLetters(possibleLetters)
+def removeLettersFromConsideration(word, score):
+  # if a word scores 0, remove all letters from TRUST. ignore further processing
+  if(score == 0):
+      # TODO
+      test = 1
+  else:
+      test = 2
+  # if a word scores positive, remove all letters from SUS
+
+  # if a word is odd, remove all letters from AMPLIFY
+
+  # if a letter is SOLVED, remove it from the other lists
 

@@ -48,3 +48,10 @@ PUZZLE_LETTERS = [
         "valid_rarities": [LetterRarity.COMMON, LetterRarity.UNCOMMON, LetterRarity.RARE]
     },
 ]
+
+# TODO do this programatically
+LETTERS_PER_CATEGORY = {
+    LetterCategory.TRUST : 3,
+    LetterCategory.AMPLIFY: 2,
+    LetterCategory.SUSPICION: 1
+}
