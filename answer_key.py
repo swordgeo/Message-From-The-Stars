@@ -1,33 +1,70 @@
 import constants
 import random
 
+answer_key_1 = ['E', 'D', 'B', 'I', 'V', 'F']
+answer_key_2 = ['S', 'F', 'M', 'L', 'D', 'Q']
+answer_key_3 = ['S', 'U', 'B', 'E', 'F', 'W']
+answer_key_4 = ['T', 'M', 'X', 'L', 'G', 'E']
+answer_key_5 = ['L', 'G', 'J', 'A', 'F', 'Y']
+
+word_scores_key_1 = [
+    'BEAVER',
+    'FIVE',
+    'DIVE',
+    'DEED',
+    'BUILD',
+    'NUDE',
+    'RECON',
+    'FORTNIGHT',
+]
+
+
 def generate_random_letters():
-    commonLetterBag = constants.COMMON_LETTERS.copy()
-    uncommonLetterBag = constants.UNCOMMON_LETTERS.copy()
-    rareLetterBag = constants.RARE_LETTERS.copy()
-    
     randomLetters = []
 
-    # for puzzleLetter in constants.PUZZLE_LETTERS:
+    for puzzleLetter in constants.PUZZLE_LETTERS:
+        # determine which rarity lists to consider
+        validRarities = puzzleLetter["valid_rarities"]
 
-    #     randomLetter = ''
-    #     randomLetters.append(randomLetter)
+        # only consider rare letters when no rare letters have been selected
+        if constants.LetterRarity.RARE in validRarities:
+            for randomLetter in randomLetters:
+                if constants.ALL_LETTERS[randomLetter] == constants.LetterRarity.RARE:
+                    validRarities.remove(constants.LetterRarity.RARE)
+                    break
+
+        # create a list of all letters of the valid rarities.
+        possibleLetters =  list(dict(filter(lambda x: x[1] in validRarities, constants.ALL_LETTERS.items())).keys())
+
+        # remove letters which have already been selected
+        for randomLetter in randomLetters:
+            if randomLetter in possibleLetters:
+                possibleLetters.remove(randomLetter)
+
+        # select a random letter
+        randomLetter = random.choice(possibleLetters)
+        randomLetters.append(randomLetter)
+
+    print(randomLetters)
 
 
 
 
+def grade_word(word, letter_group):
+    # count the number of trust/amplify/suspicion letters
+    letterCount = {
+        constants.LetterCategory.TRUST: 0,
+        constants.LetterCategory.AMPLIFY: 0,
+        constants.LetterCategory.SUSPICION: 0,
+    }
+    for idx, letter in enumerate(letter_group):
+        category = constants.PUZZLE_LETTERS[idx]["category"]
+        letterCount[category] += word.count(letter)
 
-
-    # randomLetters = [None]*6
-
-    # randomLetters[IDX_TRUST_LETTER_GREEN] = random.choice(commonLetterBag)
-    # commonLetterBag.remove(randomLetters[IDX_TRUST_LETTER_GREEN])
-
-
-    
-    # print(randomLetters)
-    # print(constants.COMMON_LETTERS)
-    # print("\n")
-    # print(commonLetterBag)
-
-generate_random_letters()
+    # Apply grading rules
+    score = 0
+    score += letterCount[constants.LetterCategory.TRUST]  # Every instance of a trust letter adds 1 to the grade
+    score *= 2 ** letterCount[constants.LetterCategory.AMPLIFY]  # Every instance of an amplify letter doubles the grade
+    if letterCount[constants.LetterCategory.SUSPICION] > 0:  # Any instance of the suspicion letter makes the grade negative
+        score *= -1
+    return score

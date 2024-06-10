@@ -29,7 +29,7 @@ PUZZLE_LETTERS = [
     },
     {
         "category": LetterCategory.TRUST,
-        "valid_rarities": [LetterRarity.UNCOMMON]
+        "valid_rarities": [LetterRarity.UNCOMMON, LetterRarity.RARE]
     },
     {
         "category": LetterCategory.TRUST,

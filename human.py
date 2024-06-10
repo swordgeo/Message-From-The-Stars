@@ -1,9 +1,4 @@
 import constants
-
-
-
-
-
 # axioms
 # if the score is odd, there cannot be amplify letters
 ## the amount of times the score can be factored by 2 is the maximum amount of trust letters
@@ -26,22 +21,6 @@ import constants
 
 
 
-TRUST_LETTER_GREEN = constants.COMMON_LETTERS
-TRUST_LETTER_BLACK = constants.UNCOMMON_LETTERS
-TRUST_LETTER_BLACK_RED = constants.UNCOMMON_LETTERS.append(constants.RARE_LETTERS)
-
-AMPLIFY_LETTER_GREEN = constants.COMMON_LETTERS
-AMPLIFY_LETTER_BLACK_RED = constants.UNCOMMON_LETTERS.append(constants.RARE_LETTERS)
-
-SUSPICION_LETTER = constants.COMMON_LETTERS.append(constants.UNCOMMON_LETTERS).append(constants.RARE_LETTERS)
-
-
-# ARRAY OF WORDS WITH SCORES 
-WORDS_WITH_SCORES = {
-   "animal": 4,
-   "elephant": 2 
-}
-
 # try to find all possible combinations of trust/amplify letters
 # 2 TT / TA
 # 4 TTTT/ TTA/TAA
@@ -53,6 +32,30 @@ WORDS_WITH_SCORES = {
 # a x 2
 
 
+def generatePossiblePuzzleLetters():
+    possiblePuzzleLetters = []
+
+    for puzzleLetter in constants.PUZZLE_LETTERS:
+        # determine which rarity lists to consider
+        validRarities = puzzleLetter["valid_rarities"]
+
+        # create a list of all letters of the valid rarities.
+        possiblePuzzleLetters.append(list(dict(filter(lambda x: x[1] in validRarities, constants.ALL_LETTERS.items())).keys()))
+    return possiblePuzzleLetters
 
 
+
+def prettyPrintPossiblePuzzleLetters(possiblePuzzleLetters):
+    for idx, puzzleLetter in enumerate(constants.PUZZLE_LETTERS):
+        letterCategory = puzzleLetter["category"]
+        sortedPuzzleLetters = possiblePuzzleLetters[idx].copy()
+        sortedPuzzleLetters.sort()
+
+        print(f"{letterCategory.name} {idx}: ")
+        print(sortedPuzzleLetters)
+
+
+
+
+prettyPrintPossiblePuzzleLetters(generatePossiblePuzzleLetters())
 
