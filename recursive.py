@@ -40,27 +40,28 @@ def generatePossibleScoringSets(word, score):
             scoringSet[constants.LetterCategory.AMPLIFY] +
             scoringSet[constants.LetterCategory.SUSPICION]
         ):
-            print(f"Not possible because the scoring string {scoringStr} exceeds the word length of {len(word)}. ({word})")
+            print(f"{scoringStr} not possible because the scoring string exceeds the word length of {len(word)}. ({word})")
             isPossible = False
 
-        # maximum number of scorable letters per category
-        # (in order to have more scorable letters than the maximum number of letters per category, some letters must be duplicated.)
-        for letterCategory in constants.LetterCategory:
-            # count the X most common letters in the word. then add them together.
-            # e.g. "buffalo" has (f, 2). the rest of the letters are 1s, and will be selected from randomly.
-            mostCommonLetters = Counter(word).most_common(constants.LETTERS_PER_CATEGORY[letterCategory])
+        if(isPossible):
+            # maximum number of scorable letters per category
+            # (in order to have more scorable letters than the maximum number of letters per category, some letters must be duplicated.)
+            for letterCategory in constants.LetterCategory:
+                # count the X most common letters in the word. then add them together.
+                # e.g. "buffalo" has (f, 2). the rest of the letters are 1s, and will be selected from randomly.
+                mostCommonLetters = Counter(word).most_common(constants.LETTERS_PER_CATEGORY[letterCategory])
 
-            # add the X most common letter counts together. (this is the maximum number of scorable letters in this category )
-            maxNumScorableLettersInCategory = 0
-            for (letter, numOccurances) in mostCommonLetters:
-                maxNumScorableLettersInCategory += numOccurances
-            if scoringSet[letterCategory] > maxNumScorableLettersInCategory:
-                isPossible = False
-                print(f"Not possible because {word} does not have enough duplicate letters for the scoring string {scoringStr}")
+                # add the X most common letter counts together. (this is the maximum number of scorable letters in this category )
+                maxNumScorableLettersInCategory = 0
+                for (letter, numOccurances) in mostCommonLetters:
+                    maxNumScorableLettersInCategory += numOccurances
+                if scoringSet[letterCategory] > maxNumScorableLettersInCategory:
+                    isPossible = False
+                    print(f"{scoringStr} Not possible because {word} does not have enough duplicate letters for the scoring string")
 
         # investigate least common letters.
         # (ensure we dont end up with TT/TA for magma = 2. should only be TT since there are not two wholly unique letters)
-        leastCommonLetters = Counter(word).least_common(2)
+        leastCommonLetters = Counter(word)
         # TODO
 
         # TODO could we brute force to double check a valid selection of letters based on rarities too?

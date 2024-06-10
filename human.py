@@ -1,4 +1,8 @@
 import constants
+
+import recursive
+
+import answer_key
 # axioms
 # if the score is odd, there cannot be amplify letters
 ## the amount of times the score can be factored by 2 is the maximum amount of trust letters
@@ -55,9 +59,15 @@ def prettyPrintPossiblePuzzleLetters(possiblePuzzleLetters):
         print(sortedPuzzleLetters)
 
 
-def ungrade_word(word, score):
+def ungrade_word(word, score, possibleLetters):
     # determine the possible combinations of trust/amplify/suspicion letters
-    test = 2
+    scoringSets = recursive.generatePossibleScoringSets('BEAVER', 6)
+    for scoringSet in scoringSets:
+      print(recursive.prettyPrintScoringSet(scoringSet))
+
+    # for every category that is absent, clear these letters
+
+
 
     # create every possible world where the score is valid. what is the brute force complexity?
     # TRUST 0: 9
@@ -66,7 +76,22 @@ def ungrade_word(word, score):
     # AMPLIFY 3: 9
     # AMPLIFY 4: 17
     # SUSPICION 5: 26
-    # about 7 million
+    # about 7 million MAX, if it determines literally everything is in the word lol
+    letterGroup = []
+    for idx, puzzleLetter in enumerate(constants.PUZZLE_LETTERS):
+        for letter in possibleLetters[idx]:
+            answer_key.gradeWord(letterGroup)
+        print(letter)
+
+
+    # maybe we can use wildcards for letter groups that have no relevant scorable letters.
+
+    # then, compare the aggregated scorable universe with what we had previously, and eliminate any invalid letters
+
+    # future runs will run the newest word first, followed by older words to see if the scoring still works
+
+
+    # maybe we can save this step til the end?
 
 
 
@@ -91,16 +116,21 @@ def ungrade_word(word, score):
 
 possibleLetters = initPossiblePuzzleLetters()
 prettyPrintPossiblePuzzleLetters(possibleLetters)
-def removeLettersFromConsideration(word, score):
-  # if a word scores 0, remove all letters from TRUST. ignore further processing
-  if(score == 0):
-      # TODO
-      test = 1
-  else:
-      test = 2
-  # if a word scores positive, remove all letters from SUS
 
-  # if a word is odd, remove all letters from AMPLIFY
 
-  # if a letter is SOLVED, remove it from the other lists
+ungrade_word('BEAVER', 6, possibleLetters)
+
+
+# def removeLettersFromConsideration(word, score):
+#   # if a word scores 0, remove all letters from TRUST. ignore further processing
+#   if(score == 0):
+#       # TODO
+#       test = 1
+#   else:
+#       test = 2
+#   # if a word scores positive, remove all letters from SUS
+
+#   # if a word is odd, remove all letters from AMPLIFY
+
+#   # if a letter is SOLVED, remove it from the other lists
 

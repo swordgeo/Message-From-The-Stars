@@ -68,3 +68,6 @@ def grade_word(word, letter_group):
     if letterCount[constants.LetterCategory.SUSPICION] > 0:  # Any instance of the suspicion letter makes the grade negative
         score *= -1
     return score
+
+for word in word_scores_key_1:
+    print(f"{word} {grade_word(word, answer_key_1)}")
