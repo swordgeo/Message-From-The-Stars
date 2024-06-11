@@ -43,36 +43,15 @@ def process_word(word, score, possiblePuzzleLetters):
          possiblePuzzleLetters[1] = [letter for letter in possiblePuzzleLetters[1] if letter not in letters_to_remove]
          possiblePuzzleLetters[2] = [letter for letter in possiblePuzzleLetters[2] if letter not in letters_to_remove]
 
-
-    # return possiblePuzzleLetters
-    # no need, let's allow the Python array pointer bug to be our feature
-
-# possiblePuzzleLetters = initPossiblePuzzleLetters()
-# graded_word = {"shithead": 16}
-
-# process_word(graded_word, possiblePuzzleLetters)
-# print(possiblePuzzleLetters[5])
-
-# word_two = {"turd": -3}
-# process_word(word_two, possiblePuzzleLetters)
-# print(possiblePuzzleLetters[5])
-
-# word_three = {"uncopyrightable": 0}
-# process_word(word_three, possiblePuzzleLetters)
-# print(possiblePuzzleLetters[0])
-# print(possiblePuzzleLetters[1])
-# print(possiblePuzzleLetters[2])
-# prettyPrintPossiblePuzzleLetters(generatePossiblePuzzleLetters())
-
-
 # THIS IS THE MAIN SOLVE FUNCTION
 def solveWordGroup(wordGroup):
   possibleLetters = initPossiblePuzzleLetters()
   for word, score in wordGroup.items():
        process_word(word, score, possibleLetters)
-  #print(wordGroup) 
   prettyPrintPossiblePuzzleLetters(possibleLetters)
   return "no idea lol"
 
-print(solveWordGroup(answer_key.scored_word_group_1))
+
+# Call the solve function
+print(f"Solution: {solveWordGroup(answer_key.scored_word_group_1)}")
 print(f"answer key: {answer_key.answer_key_1}")
