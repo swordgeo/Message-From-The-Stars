@@ -7,7 +7,7 @@ answer_key_3 = ['S', 'U', 'B', 'E', 'F', 'W']
 answer_key_4 = ['T', 'M', 'X', 'L', 'G', 'E']
 answer_key_5 = ['L', 'G', 'J', 'A', 'F', 'Y']
 
-word_scores_key_1 = [
+words_to_score_key_1 = [
     'BEAVER',
     'FIVE',
     'DIVE',
@@ -48,9 +48,7 @@ def generate_random_letters():
     print(randomLetters)
 
 
-
-
-def grade_word(word, letter_group):
+def score_word(word, letter_group):
     # count the number of trust/amplify/suspicion letters
     letterCount = {
         constants.LetterCategory.TRUST: 0,
@@ -63,11 +61,16 @@ def grade_word(word, letter_group):
 
     # Apply grading rules
     score = 0
-    score += letterCount[constants.LetterCategory.TRUST]  # Every instance of a trust letter adds 1 to the grade
-    score *= 2 ** letterCount[constants.LetterCategory.AMPLIFY]  # Every instance of an amplify letter doubles the grade
-    if letterCount[constants.LetterCategory.SUSPICION] > 0:  # Any instance of the suspicion letter makes the grade negative
+    score += letterCount[constants.LetterCategory.TRUST]  # Every instance of a trust letter adds 1 to the score
+    score *= 2 ** letterCount[constants.LetterCategory.AMPLIFY]  # Every instance of an amplify letter doubles the score
+    if letterCount[constants.LetterCategory.SUSPICION] > 0:  # Any instance of the suspicion letter makes the score negative
         score *= -1
     return score
 
-for word in word_scores_key_1:
-    print(f"{word} {grade_word(word, answer_key_1)}")
+def generate_scored_word_group(wordsToScore, answerKey):
+    scoredWordGroup = {}
+    for word in wordsToScore:
+        scoredWordGroup[word] = score_word(word, answerKey)
+    return scoredWordGroup
+
+scored_word_group_1 = generate_scored_word_group(words_to_score_key_1, answer_key_1)

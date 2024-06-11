@@ -75,8 +75,20 @@ for scoringSet in possibleScoringSets:
     print(prettyPrintScoringSet(scoringSet))
 
 
+customRules = [
+    {
+        # TRUST = M OR G
+        # TRUST = M OR AMPLIFY = G
+        # TRUST = M + A OR AMPLIFY = M + A
+        # TRUST = M OR G+A
+        # TRUST = G+A OR A = Q
+        
+    }
+]
 
-
+# custom rules
+# trust = M or G
+# 
 
 # further refinement is to confirm that each letter combo is possible with the available trust/amplify/suspicion buckets, for example if no fs exist in amplify,
 #offer with 8 implies f = trust
