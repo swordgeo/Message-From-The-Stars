@@ -23,31 +23,15 @@ def prettyPrintPossiblePuzzleLetters(possiblePuzzleLetters):
         print(f"{letterCategory.name} {idx}: ")
         print(sortedPuzzleLetters)
 
+def process_word(word, score, possiblePuzzleLetters):
+    word = word.upper()
 
-
-possibleLetters = initPossiblePuzzleLetters()
-#prettyPrintPossiblePuzzleLetters(possibleLetters)
-
-def process_word(graded_word, possiblePuzzleLetters):
-    
-    # find correct way to call the specific suspicion letter array
-    # print(possiblePuzzleLetters) # not enumerated, pPL is just a nested array
-
-    # Unpacking the key and value
-    # l_word, grade = graded_word --- dictionary edition
-    l_word, grade = next(iter(graded_word.items()))
-    word = l_word.upper()
-    print(word)
-    print(grade)
-    print(possiblePuzzleLetters[5])
-    # return
-
-    if grade > 0:  # positive
+    if score > 0:  # positive
             # remove all present letters from suspicion
             letters_to_remove = set(word)
             possiblePuzzleLetters[5] = [letter for letter in possiblePuzzleLetters[5] if letter not in letters_to_remove]
             # ungrade_word()
-    elif grade < 0:  # negative
+    elif score < 0:  # negative
             # remove all NON-present letters from suspicion
             letters_to_keep = set(word)
             possiblePuzzleLetters[5] = [letter for letter in possiblePuzzleLetters[5] if letter in letters_to_keep]
@@ -63,26 +47,32 @@ def process_word(graded_word, possiblePuzzleLetters):
     # return possiblePuzzleLetters
     # no need, let's allow the Python array pointer bug to be our feature
 
-possiblePuzzleLetters = initPossiblePuzzleLetters()
-graded_word = {"shithead": 16}
+# possiblePuzzleLetters = initPossiblePuzzleLetters()
+# graded_word = {"shithead": 16}
 
-process_word(graded_word, possiblePuzzleLetters)
-print(possiblePuzzleLetters[5])
+# process_word(graded_word, possiblePuzzleLetters)
+# print(possiblePuzzleLetters[5])
 
-word_two = {"turd": -3}
-process_word(word_two, possiblePuzzleLetters)
-print(possiblePuzzleLetters[5])
+# word_two = {"turd": -3}
+# process_word(word_two, possiblePuzzleLetters)
+# print(possiblePuzzleLetters[5])
 
-word_three = {"uncopyrightable": 0}
-process_word(word_three, possiblePuzzleLetters)
-print(possiblePuzzleLetters[0])
-print(possiblePuzzleLetters[1])
-print(possiblePuzzleLetters[2])
+# word_three = {"uncopyrightable": 0}
+# process_word(word_three, possiblePuzzleLetters)
+# print(possiblePuzzleLetters[0])
+# print(possiblePuzzleLetters[1])
+# print(possiblePuzzleLetters[2])
 # prettyPrintPossiblePuzzleLetters(generatePossiblePuzzleLetters())
 
-def solveWordGroup(wordGroup):
-  print(wordGroup) 
 
+# THIS IS THE MAIN SOLVE FUNCTION
+def solveWordGroup(wordGroup):
+  possibleLetters = initPossiblePuzzleLetters()
+  for word, score in wordGroup.items():
+       process_word(word, score, possibleLetters)
+  #print(wordGroup) 
+  prettyPrintPossiblePuzzleLetters(possibleLetters)
   return "no idea lol"
 
 print(solveWordGroup(answer_key.scored_word_group_1))
+print(f"answer key: {answer_key.answer_key_1}")
