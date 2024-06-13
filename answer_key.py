@@ -6,6 +6,7 @@ answer_key_2 = ['S', 'F', 'M', 'L', 'D', 'Q']
 answer_key_3 = ['S', 'U', 'B', 'E', 'F', 'W']
 answer_key_4 = ['T', 'M', 'X', 'L', 'G', 'E']
 answer_key_5 = ['L', 'G', 'J', 'A', 'F', 'Y']
+answer_key_6 = ['T', 'U', 'D', 'S', 'H', 'R']
 
 words_to_score_key_1 = [
     'BEAVER',
@@ -16,6 +17,12 @@ words_to_score_key_1 = [
     'NUDE',
     'RECON',
     'FORTNIGHT',
+]
+
+words_to_score_key_2 = [
+    'SHITHEAD',
+    'TURD',
+    'CREATE'
 ]
 
 
@@ -74,3 +81,4 @@ def generate_scored_word_group(wordsToScore, answerKey):
     return scoredWordGroup
 
 scored_word_group_1 = generate_scored_word_group(words_to_score_key_1, answer_key_1)
+scored_word_group_2 = generate_scored_word_group(words_to_score_key_2, answer_key_6)
