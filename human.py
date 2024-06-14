@@ -1,7 +1,6 @@
 import constants
 # import recursive
 import answer_key
-from itertools import permutations
 import copy
 
 
@@ -133,6 +132,7 @@ def remove_unrepresented_letters(possibleLetters, combinations):
 
 # THIS IS THE MAIN SOLVE FUNCTION
 def solveWordGroup(wordGroup):
+  print(wordGroup)
   possibleLetters = initPossiblePuzzleLetters()
   for word, score in wordGroup.items():
        process_word(word, score, possibleLetters)
@@ -158,5 +158,5 @@ def solveWordGroup(wordGroup):
 
 
 # Call the solve function
-print(f"Solution: {solveWordGroup(answer_key.scored_word_group_1)}")
-print(f"answer key: {answer_key.answer_key_6}")
+print(f"Solution: {solveWordGroup(answer_key.scored_word_group_3)}")
+# print(f"answer key: {answer_key.answer_key_6}")
