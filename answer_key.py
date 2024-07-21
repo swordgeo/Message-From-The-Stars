@@ -81,4 +81,4 @@ def generate_scored_word_group(wordsToScore, answerKey):
 
 scored_word_group_1 = generate_scored_word_group(words_to_score_key_1, answer_key_1)
 scored_word_group_2 = generate_scored_word_group(words_to_score_key_2, answer_key_6)
-scored_word_group_3 = {'LEEDLE':16} # for real-time play, ex. {'SANDWICH': 4}
+scored_word_group_3 = {'PIPELAYER':4, 'GALLERY':0,'COMBINATION':8, 'SATIRICAL': 0, 'CAPE': 2,'SAPIENT':4,'QUEEN':-2,'UMPIRE':-1} # for real-time play, ex. {'SANDWICH': 4}
