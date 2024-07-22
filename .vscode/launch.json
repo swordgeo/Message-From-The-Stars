@@ -3,6 +3,12 @@
     // Hover to view descriptions of existing attributes.
     // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
     "version": "0.2.0",
+    "compounds": [
+        {
+            "name": "Start Server + Webpage",
+            "configurations": ["Start Flask Server", "Launch Flask Webpage"]
+        }
+    ],
     "configurations": [
         {
             "name": "Python Debugger: Current File",
@@ -10,6 +16,19 @@
             "request": "launch",
             "program": "${file}",
             "console": "integratedTerminal"
+        },
+        {
+            "name": "Start Flask Server",
+            "type": "debugpy",
+            "request": "launch",
+            "program": "${workspaceFolder}/python/server.py",
+            "console": "integratedTerminal"
+        },
+        {
+            "name": "Launch Flask Webpage",
+            "type": "firefox",
+            "request": "launch",
+            "url": "localhost:3000"
         }
     ]
 }

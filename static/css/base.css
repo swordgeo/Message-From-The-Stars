@@ -4,3 +4,76 @@
   text-align: center;
   justify-content: center;
 }
+
+.uiLetter{
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+  font-weight: bold;
+  font-size: large;
+}
+
+
+.commonLetter {
+  color: rgb(113, 158, 101)
+}
+
+.uncommonLetter{
+  color: rgb(70, 70, 70)
+}
+
+.toughLetter{
+  color: rgb(184, 109, 90)
+}
+
+/* .toughLetter::after{
+  content:"*"
+} */
+
+table.uiTable{
+  background-color: rgb(122, 157, 133);
+  border: 2px solid black;
+  border-collapse: collapse
+}
+
+table.uiTable th, table.uiTable td{
+  background-color: rgb(219, 217, 213);
+  border: 1px solid black;
+  border-collapse: collapse;
+  text-align: center;
+  border-radius: 2px;
+}
+
+
+/* alien keyletter inputs */
+.key-letter-grouping {
+  margin-right: 35px;
+  /* display: flex;
+  flex-direction: row; */
+  align-items: center;
+  /* border: 1px solid black */
+  text-align: center;
+  justify-content: center;
+}
+
+.input-box {
+  /* display: flex;
+  flex-direction: row; */
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  font-size: 24px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  outline: none;
+  transition: border-color 0.3s;
+  margin: 5px;
+}
+
+.input-container {
+  display: flex;
+  flex-direction: row;
+}
+
+.input-box:focus {
+  border-color: #007BFF;
+}
+/* end of alien keyletter inputs */

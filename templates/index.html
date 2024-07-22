@@ -21,9 +21,60 @@
 
     <main>
       <!-- <button onclick="keepHand()">Keep Hand</button> -->
+      <h2>Guess what kids? <span id="message">{{ message }}</span>. And another thing! <span id="example-js">1</span></h2>
+      <button onclick="doThing()">Do The Thing</button>
+
+      <!-- For the sake of making this a single page app we'll segregate the alien and human sides of this equation-->
+      <section id="alien-section">
+        <!-- We will provide six mini input boxes or whatever for which the alien can input their six letters.
+         Split them up into three sections for trust, amplify, suspicion
+         If we're really cool boys and girls, we will even in the JavaScript disallow invalid entries before shipping it off to Flask -->
+
+        <div class="input-container">
+          <div id="trust-letter-inputs" class="key-letter-grouping">
+            <p>Trust Letters</p>
+            <input type="text" maxlength="1" class="input-box" id="box1" pattern="[A-Za-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box2" pattern="[A-Za-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box3" pattern="[A-Za-z]{1}">
+          </div>
+          <div id="amplify-letter-inputs" class="key-letter-grouping">
+            <p>Amplify Letters</p>
+            <input type="text" maxlength="1" class="input-box" id="box4" pattern="[A-Za-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box5" pattern="[A-Za-z]{1}">
+          </div>
+          <div id="suspicion-letter-inputs" class="key-letter-grouping">
+            <p>Suspicion Letters</p>
+            <input type="text" maxlength="1" class="input-box" id="box6" pattern="[A-Za-z]{1}">
+          </div>
+          <button onclick="submitLetters()">Submit Letters</button>
+        </div>
+        
+      </section>
+
+      <section id="human-section">
+        <!-- -->
+        <table class="uiTable">
+          <tr>
+            ABC
+          </tr>
+          <tr>
+            <td>TRUST +1
+            +1 FOR EACH PRESENT 
+            1 common (green)
+            2 uncommon / tough*
+            ( black / red )</td>
+          </tr>
+        </table>
+        {% include 'letterTable.html' %}
+        <!-- -->
+      </section>
+
+      
+
     </main>
 
     <footer class="center">
+      <!-- -->
       <p>Message From The Stars Helper has connected <span id="visit-count">{{ visit_count }}</span> extraterrestial civilizations and counting!</p>
       <p>You may post bug reports and feature requests on <a href="https://github.com/swordgeo/Message-From-The-Stars">GitHub</a>.</p>
       <p>You can also contact us through Reddit: <a href="https://reddit.com/user/swordgeo/" title="Reddit"><img loading="lazy" src="https://1000logos.net/wp-content/uploads/2017/05/Reddit-icon-4.png" alt="Reddit icon" width="24" height="24"></a></p>
@@ -31,7 +82,6 @@
     </footer>
 
     <script src="{{ url_for('static', filename='js/script.js') }}"></script>
-
   </body>
   
 </html>
