@@ -27,10 +27,49 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
 // takes in letters from HTML, posts them to Flask function  and then displays the suggestions
-function submitLetters() {
-  const inputs = document.querySelectorAll('.input-box');
-  const values = Array.from(inputs).map(input => input.value);
-  console.log(values);
+function submitLetterWords() {
+  const letterInputs = document.querySelectorAll('.input-box');
+  const letters = Array.from(letterInputs).map(input => input.value);
+  const wordsInputs = document.querySelectorAll('.word-input-box');
+  const words = Array.from(wordsInputs).map(input => input.value);
+
+  getSuggestions(letters, words)
+    .then(data => {
+      console.log(data); // This should log the fetched data
+      const suggestions = data.suggestions; // Access the suggestions from the fetched data
+      console.log(suggestions);
+      buildSuggestionList(suggestions); // Pass the suggestions to buildSuggestionList
+    })
+    .catch(error => {
+      console.error('Error fetching suggestions:', error);
+    });
+}
+
+
+function getSuggestions(letters, words) {
+  const encodedLetters = letters.join(',');
+  const encodedWords = words.join(',');
+
+  // Return the promise from fetch
+  return fetch('/get-suggestions', {
+      method: 'POST',
+      headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+      },
+      body: `letters=${encodeURIComponent(encodedLetters)}&words=${encodeURIComponent(encodedWords)}`
+  })
+    .then(response => {
+      if (!response.ok) {
+          throw new Error('Network response was not ok');
+      }
+      return response.json(); // This returns the parsed JSON response body
+    });
+}
+
+
+function buildSuggestionList(words) {
+  console.log("started buildSuggestionList");
+  console.log(words);
 }
 
 

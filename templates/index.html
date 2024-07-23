@@ -33,23 +33,35 @@
         <div class="input-container">
           <div id="trust-letter-inputs" class="key-letter-grouping">
             <p>Trust Letters</p>
-            <input type="text" maxlength="1" class="input-box" id="box1" pattern="[A-Za-z]{1}">
-            <input type="text" maxlength="1" class="input-box" id="box2" pattern="[A-Za-z]{1}">
-            <input type="text" maxlength="1" class="input-box" id="box3" pattern="[A-Za-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box1" pattern="[a-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box2" pattern="[a-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box3" pattern="[a-z]{1}">
           </div>
           <div id="amplify-letter-inputs" class="key-letter-grouping">
             <p>Amplify Letters</p>
-            <input type="text" maxlength="1" class="input-box" id="box4" pattern="[A-Za-z]{1}">
-            <input type="text" maxlength="1" class="input-box" id="box5" pattern="[A-Za-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box4" pattern="[a-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box5" pattern="[a-z]{1}">
           </div>
           <div id="suspicion-letter-inputs" class="key-letter-grouping">
             <p>Suspicion Letters</p>
-            <input type="text" maxlength="1" class="input-box" id="box6" pattern="[A-Za-z]{1}">
+            <input type="text" maxlength="1" class="input-box" id="box6" pattern="[a-z]{1}">
           </div>
-          <button onclick="submitLetters()">Submit Letters</button>
+          
         </div>
+        <div id="alien-word-inputs">
+          <input type="text" maxlength="20" class="word-input-box" pattern="[a-z]{20}">
+          <input type="text" maxlength="20" class="word-input-box" pattern="[a-z]{20}">
+          <input type="text" maxlength="20" class="word-input-box" pattern="[a-z]{20}">
+        </div>
+        <button onclick="submitLetterWords()">Submit Letters and Words</button>
         
       </section>
+
+      <section id="alien output">
+        
+      </section>
+
+      <hr>
 
       <section id="human-section">
         <!-- -->

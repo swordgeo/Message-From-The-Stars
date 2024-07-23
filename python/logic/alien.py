@@ -183,7 +183,74 @@ def main():
 
 
 
-if __name__ == '__main__':
-    main()
+# From this space forward we are refactoring necessary functions for the frontend interface
+
+# main() changed to work well with frontend
+def produce_suggestions(letters_str, words_str):
+    # Get the trust, amplify, and suspicion letters
+    trust_letters, amplify_letters, suspicion_letter = process_letters(letters_str)
+    
+    # Collect words and their associations
+    collected_words = process_words(words_str)
+    
+    # Prepare a dictionary to store the graded associations for each word
+    word_to_graded_associations = {}
+    
+    # Loop through each word and its associations
+    for word, associations in collected_words:
+        # Grade the associations for the current word
+        graded_associations = grade_word(associations, trust_letters, amplify_letters, suspicion_letter)
+        
+        # Group the graded associations by the original word
+        word_to_graded_associations[word] = graded_associations
+    
+    # print("")
+    # print(word_to_graded_associations)
+    return word_to_graded_associations
+
+
+    
+        
+        
+
+
+def process_letters(letters_str):
+    letters_str=letters_str.replace(",","")
+    print(f"after trim {letters_str}")
+    # Confirm the input string length is exactly 6 characters
+    if len(letters_str) != 6:
+        raise ValueError("Input must contain exactly 6 characters.")
+
+    # Convert the string to a set to remove duplicates and check uniqueness
+    unique_letters = set(letters_str)
+    if len(unique_letters) != 6:
+        raise ValueError("All letters must be unique.")
+
+    # Categorize the letters based on their positions
+    trust_letters = letters_str[:3]
+    amplify_letters = letters_str[3:5]
+    suspicion_letter = letters_str[5]
+
+    return trust_letters, amplify_letters, suspicion_letter
+
+
+def process_words(words_str):
+    collected_words = []  # List to store the successfully collected words
+    words = words_str.split(',')
+
+    for word in words:
+        # Two separate API calls
+        word_associations = get_word_associations(word)
+        word_synonyms = get_synonyms(word)
+        # If successful, add the word to the collected_words list
+        collected_words.append((word, word_associations+word_synonyms))
+        # Optionally, print the associations to confirm success
+        # print(f"Associations for '{word}': {word_associations}")
+            
+    # print(collected_words)
+    return collected_words
+
+# if __name__ == '__main__':
+#     main()
     # get_word_associations("dog")
     # get_synonyms("dog")
