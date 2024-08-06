@@ -17,42 +17,40 @@ syn_headers = {
 def get_word_associations(keyword):
   # Pass in the word in question, it will return a list of word associations that are graded by their alleged relation to the word in question. 
   # We can allow this to be a slight factor but the associative grading isn't that good IMO
-  ass_conn.request("GET", f"/associations/?entry={keyword}", headers=ass_headers)
+  try:
+      
+    ass_conn.request("GET", f"/associations/?entry={keyword}", headers=ass_headers)
+    res = ass_conn.getresponse()
+    data = res.read()
 
-  res = ass_conn.getresponse()
-  data = res.read()
+    decoded_data = data.decode("utf-8")
+    parsed_json = json.loads(decoded_data)
 
-  decoded_data = data.decode("utf-8")
-  parsed_json = json.loads(decoded_data)
-
-  associations_scored = parsed_json["associations_scored"]
-  ass_array = []
-  for word, score in associations_scored.items():
-      ass_array.append(word)
-  #  print(f"{word}: {score}")
-  # print(ass_array)
-
-  return ass_array
+    associations_scored = parsed_json.get("associations_scored", {})
+    if not associations_scored:
+      return []
+    ass_array = [word for word, score in associations_scored.items()]
+    return ass_array
+  except Exception as e:
+    print(f"An error occurred while getting associations for '{keyword}'. Error: {str(e)}")
+    return []
   # A dictionary list of two items apiece
 
 def get_synonyms(word):
   # Pass in the word in question, it will return a list of word associations that are graded by their alleged relation to the word in question. 
   # We can allow this to be a slight factor but the associative grading isn't that good IMO
-  syn_conn.request("GET", f"/synonyms/{word}", headers=syn_headers)
-
-  res = syn_conn.getresponse()
-  data = res.read()
-
-  decoded_data = data.decode("utf-8")
-  parsed_json = json.loads(decoded_data)
-  # print(parsed_json['synonyms'])
-  syn_array = parsed_json['synonyms']
-  # associations_scored = parsed_json["associations_scored"]
-  # for word, score in associations_scored.items():
-  #  print(f"{word}: {score}")
-
-  return syn_array
-  # A dictionary list of two items apiece
+  try:
+    syn_conn.request("GET", f"/synonyms/{word}", headers=syn_headers)
+    res = syn_conn.getresponse()
+    data = res.read()
+    decoded_data = data.decode("utf-8")
+    parsed_json = json.loads(decoded_data)
+    synonyms_list = parsed_json.get('synonyms', [])
+    return synonyms_list
+    # A dictionary list of two items apiece
+  except Exception as e:
+    print(f"An error occurred while getting synonyms for '{word}'. Error: {str(e)}")
+    return []
 
 
 def get_letters():
@@ -190,8 +188,10 @@ def produce_suggestions(letters_str, words_str):
     # Get the trust, amplify, and suspicion letters
     trust_letters, amplify_letters, suspicion_letter = process_letters(letters_str)
     
+    # let's test some bad values
     # Collect words and their associations
     collected_words = process_words(words_str)
+    # collected_words = process_words("cat,dog,leedle")
     
     # Prepare a dictionary to store the graded associations for each word
     word_to_graded_associations = {}

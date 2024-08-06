@@ -6,8 +6,8 @@
     "compounds": [
         {
             "name": "Start Server + Webpage",
-            "configurations": ["Start Flask Server", "Launch Flask Webpage"]
-        }
+            "configurations": ["Start React Webpage", "Start Flask Server"]
+        },
     ],
     "configurations": [
         {
@@ -21,14 +21,16 @@
             "name": "Start Flask Server",
             "type": "debugpy",
             "request": "launch",
-            "program": "${workspaceFolder}/python/server.py",
+            "program": "${workspaceFolder}/flask-server/server.py",
             "console": "integratedTerminal"
         },
         {
-            "name": "Launch Flask Webpage",
-            "type": "firefox",
+            "name": "Start React Webpage",
+            "type": "node",
             "request": "launch",
-            "url": "localhost:3000"
+            "cwd": "${workspaceFolder}/frontend",
+            "runtimeExecutable": "npm",
+            "runtimeArgs": ["start"]
         }
     ]
 }

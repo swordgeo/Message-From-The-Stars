@@ -1,5 +1,6 @@
 
 
+
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
   const inputs = document.querySelectorAll('.input-box');
@@ -70,7 +71,16 @@ function getSuggestions(letters, words) {
 function buildSuggestionList(words) {
   console.log("started buildSuggestionList");
   console.log(words);
+  const outputSection = document.getElementById("alien-output")
+
 }
+
+
+
+
+
+
+
 
 
 // does nothing but serve as guidance/example between JS and Flask
@@ -86,6 +96,9 @@ function doThing() {
           document.getElementById('example-js').textContent = data.example_js;
       });
 }
+
+
+
 
 
 // document.getElementById('decklistForm').addEventListener('submit', function(e) {
