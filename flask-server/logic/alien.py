@@ -1,5 +1,12 @@
 import http.client
 import json
+from openai import OpenAI
+import os
+
+from dotenv import load_dotenv
+load_dotenv()
+
+client = OpenAI()
 
 ass_conn = http.client.HTTPSConnection("twinword-word-associations-v1.p.rapidapi.com")
 syn_conn = http.client.HTTPSConnection("languagetools.p.rapidapi.com")
@@ -36,6 +43,7 @@ def get_word_associations(keyword):
     return []
   # A dictionary list of two items apiece
 
+
 def get_synonyms(word):
   # Pass in the word in question, it will return a list of word associations that are graded by their alleged relation to the word in question. 
   # We can allow this to be a slight factor but the associative grading isn't that good IMO
@@ -51,6 +59,32 @@ def get_synonyms(word):
   except Exception as e:
     print(f"An error occurred while getting synonyms for '{word}'. Error: {str(e)}")
     return []
+
+
+def get_chatgpt_suggestions(word):
+  prompt = f"""Come up with a list of single English words that would help a human playing a game guess the word I provide. Each word must stand alone as a helpful clue as only one will be chosen. Synonyms, word associations, and related words are preferred. You must suggest only real English words and only single words are allowed.
+  Answer as a comma separated list of 40 words without spaces.
+
+  The provided word is: {word}"""
+
+  # prompt = f"""Come up with a list of single English words that would help a human playing a game guess the word I provide. Each word must stand alone as a helpful clue as only one will be chosen. Synonyms, word associations, and related words are preferred. You must suggest only real English words and only single words are allowed. Using my provided letters as much as possible is preffered, but your clue must still relate meaningfully to my provided word. Please use each letter at least once among all suggestions.
+  # Answer as a comma separated list of 25 words without spaces.
+
+  # The provided word is: {word}
+  # The provided letters are: {letters}"""
+
+  completion = client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+      {"role": "system", "content": "You are an assistant helping to provide clue words for a game."},
+      {"role": "user", "content": prompt}
+    ]
+  )
+
+  gpt_words_str = completion.choices[0].message.content
+  words = gpt_words_str.split(',')
+  print(words)
+  return words
 
 
 def get_letters():
@@ -85,7 +119,8 @@ def grade_word(test_words, trust_letters, amplify_letters, suspicion_letter):
     graded_associations = []  # List to store the graded associations
     
     # Iterate through each association
-    for word in test_words:
+    for _word in test_words:
+        word = _word.strip()
         if ' ' in word:
             continue  # Skip entries with spaces
         
@@ -240,17 +275,18 @@ def process_words(words_str):
 
     for word in words:
         # Two separate API calls
-        word_associations = get_word_associations(word)
-        word_synonyms = get_synonyms(word)
+        # word_associations = get_word_associations(word)
+        # word_synonyms = get_synonyms(word)
+        chatgpt_suggestions = get_chatgpt_suggestions(word)
         # If successful, add the word to the collected_words list
-        collected_words.append((word, word_associations+word_synonyms))
+        # collected_words.append((word, word_associations+word_synonyms))
+        
+        collected_words.append((word, chatgpt_suggestions))
         # Optionally, print the associations to confirm success
         # print(f"Associations for '{word}': {word_associations}")
             
     # print(collected_words)
     return collected_words
 
-# if __name__ == '__main__':
-#     main()
-    # get_word_associations("dog")
-    # get_synonyms("dog")
+if __name__ == '__main__':
+    print(produce_suggestions("p,e,x,i,y,r", "robes"))

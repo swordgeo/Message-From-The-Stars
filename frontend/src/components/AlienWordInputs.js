@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-function WordInputs() {
+function AlienWordInputs() {
 
     const [word1, setWord1] = useState('');
     const [word2, setWord2] = useState('');
@@ -18,5 +18,5 @@ function WordInputs() {
     );
 };
 
-export default WordInputs;
+export default AlienWordInputs;
   

@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 function WordOutputs() {
     return (
         <div id="word-outputs">
-           TODO
+           WOrd Outputs TODO
         </div>
       );
 };

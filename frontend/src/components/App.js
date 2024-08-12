@@ -4,9 +4,10 @@ import './App.css';
 
 import LetterGrid from './LetterGrid';
 import LetterInputs from './LetterInputs';
-import WordInputs from './WordInputs';
+import AlienWordInputs from './AlienWordInputs';
 import WordOutputs from './WordOutputs';
 import UseGetSuggestions from './GetSuggestions';
+import ClueWordInputSet from './ClueWordInputSet';
 
 
 function App() {
@@ -23,17 +24,31 @@ function App() {
 
   const suggestions = UseGetSuggestions(fetchTrigger ? letters : [], fetchTrigger ? words : [], setIsLoading, setError);
 
-
+  //something to check for duped input letters/words
+  const hasDuplicates = (array) => {
+    return new Set(array).size !== array.length;
+  };
 
 
   // takes in letters from HTML, posts them to Flask function  and then displays the suggestions
   function submitLetterWords() {
     const letterInputs = document.querySelectorAll('.input-box');
     const newLetters = Array.from(letterInputs).map(input => input.value);
-    setLetters(newLetters);
     
     const wordsInputs = document.querySelectorAll('.word-input-box');
     const newWords = Array.from(wordsInputs).map(input => input.value);
+
+    if (hasDuplicates(newLetters)) {
+      setError(new Error("All six letters must be distinct."));
+      return;
+    }
+
+    if (hasDuplicates(newWords)) {
+      setError(new Error("All words must be distinct."));
+      return;
+    }
+
+    setLetters(newLetters);
     setWords(newWords);
 
     setIsLoading(true);
@@ -56,7 +71,7 @@ function App() {
         </header>
         <div>
           <LetterInputs/>
-          <WordInputs/>
+          <AlienWordInputs/>
           <button onClick={submitLetterWords}>Submit Letters and Words</button>
 
         {isLoading && <div>Loading...</div>}
@@ -83,6 +98,7 @@ function App() {
         )}
 
           <WordOutputs/>
+          {/* <ClueWordInputSet /> */}
           <LetterGrid/>
           
         </div>
