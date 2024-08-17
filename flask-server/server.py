@@ -8,6 +8,7 @@ import os
 
 # file imports
 from logic.alien import produce_suggestions # produce_suggestions
+from logic.human import produce_valid_letters
 
 load_dotenv()
 app = Flask(__name__, template_folder="../src", static_folder="../frontend/src/index.js")
@@ -28,14 +29,55 @@ def get_suggestions():
     words_str = request.form.get('words', '')
     print(letters_str)
     print(words_str)
-    
-
     try:
         final_suggestions = produce_suggestions(letters_str, words_str)
         # final_suggestions = {'poop': [{'suggestion': 'turd', 'grade': -3, 'density': 1.0}, {'suggestion': 'shit', 'grade': 4, 'density': 0.75}], 'blood': [{'suggestion': 'pressure', 'grade': -4, 'density': 0.625}, {'suggestion': 'artery', 'grade': -1, 'density': 0.5}], 'cat': [{'suggestion': 'cheetah', 'grade': 4, 'density': 0.42857142857142855}, {'suggestion': 'tiger', 'grade': -1, 'density': 0.4}]}
         print(final_suggestions)
         return jsonify(suggestions = final_suggestions)
     except ValueError as e:
+        return jsonify(error=str(e)), 400
+    
+
+@app.route('/process-clues', methods=['POST'])
+def process_clues():
+    try:
+        # Retrieve JSON data from the request
+        data = request.get_json()
+        
+        # Print the received data for debugging
+        print("Received data:", data)
+        
+        # Process the data as needed
+        # Assuming data is a list of dictionaries with 'word' and 'grade' keys
+        processed_data = {}
+        for item in data:
+            word = item.get('word').upper() # our original code used uppercase words
+            grade = item.get('grade')
+            if word:
+                processed_data[word] = int(grade) #make sure grades presented as ints and not strings
+        
+        # Print the processed data for debugging
+        print("Processed data:", processed_data)
+
+
+        # Processed data: {'DOG': 2, 'SANDWICH': -3}
+        # Pass this processed data into the human scripts.
+
+        # check if we have an older array of possible_letters to start with
+        if 'possible_letters' in session:
+          possible_letters, distinct_combinations = produce_valid_letters(processed_data, session['possible_letters'])
+        else:
+          possible_letters, distinct_combinations = produce_valid_letters(processed_data)
+        
+        session['possible_letters'] = possible_letters
+
+        
+        # Return the processed data as a JSON response
+        return jsonify({
+          'possible_letters': possible_letters,
+          'distinct_combinations': distinct_combinations
+        })
+    except Exception as e:
         return jsonify(error=str(e)), 400
     
 
@@ -47,6 +89,6 @@ def do_thing():
     return jsonify(example_js = session['example-js']
                    )
 
-               
+
 if __name__ == '__main__':
     app.run(debug=True, port=5000)

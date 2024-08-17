@@ -1,6 +1,9 @@
-import constants
+# we're forced to use "from logic import <blah>" due to server.py, otherwise we'd import them directly
+from logic import constants
+# import constants
 # import recursive
-import answer_key
+from logic import answer_key
+# import answer_key
 import copy
 
 
@@ -154,9 +157,49 @@ def solveWordGroup(wordGroup):
   return "no idea lol"
 
 
+# --- Frontend integration below ---
+
+
+# solveWordGroup modified for frontend integration
+# We have the ability to pass in the last final array of possibleLetters
+#   (allows us to save resources not starting from scratch with each new letter)
+def produce_valid_letters(wordGroup, possibleLetters = initPossiblePuzzleLetters()):
+  # print(wordGroup)
+  # possibleLetters = initPossiblePuzzleLetters()
+  for word, score in wordGroup.items():
+       process_word(word, score, possibleLetters)
+  # print("After first logical pass, starting possible letters:")
+  # prettyPrintPossiblePuzzleLetters(possibleLetters)
+
+  current_possible_combinations = generate_unique_combinations(possibleLetters)
+  plausible_combinations = evaluate_combinations(wordGroup, current_possible_combinations)
+  # Remove duplicates by converting to a set and back to a list
+  distinct_combinations = list(set(plausible_combinations))
+  # print("Currently possible answers")
+  # print(distinct_combinations)
+
+  possibleLetters = remove_unrepresented_letters(possibleLetters, distinct_combinations)
+  # print("Current possible letters")
+  # prettyPrintPossiblePuzzleLetters(possibleLetters)
+  
+  # it's a flood
+  return possibleLetters, distinct_combinations
+
 
 
 
 # Call the solve function
-print(f"Solution: {solveWordGroup(answer_key.scored_word_group_3)}")
+# print(f"Solution: {solveWordGroup(answer_key.scored_word_group_3)}")
 # print(f"answer key: {answer_key.answer_key_6}")
+
+if __name__ == '__main__':
+  # solveWordGroup's call
+  # print(f"Solution: {solveWordGroup(answer_key.scored_word_group_3)}")
+  # answers = process_clues({'DOG': 2, 'SANDWICH': -3})
+  # possibleLetters, distinct_combinations = produce_valid_letters(answer_key.scored_word_group_3)
+  possibleLetters, distinct_combinations = produce_valid_letters({'MOVIES': -2, 'FEASTS': 4, 'INTIMIDATED': -3})
+  # print(possibleLetters)
+  prettyPrintPossiblePuzzleLetters(possibleLetters)
+  print("Currently possible aswers")
+  print((distinct_combinations))
+  print(len(distinct_combinations))

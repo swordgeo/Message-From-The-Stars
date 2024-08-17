@@ -19,7 +19,7 @@ function ClueWordInput(id, onChange) {
         value={grade} 
         onChange={e => setGrade(parseInt(e.target.value, 10) || 0)} // Parse the input to integer
         type="number" 
-        class="clue-number-input-box"
+        class="clue-grade-input-box"
       />
     </div>
   );

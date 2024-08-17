@@ -1,0 +1,5 @@
+flask
+flask_session
+load_dotenv
+flask_cors
+openai

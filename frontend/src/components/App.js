@@ -30,7 +30,7 @@ function App() {
   };
 
 
-  // takes in letters from HTML, posts them to Flask function  and then displays the suggestions
+  // takes in letters and words from HTML, posts them to Flask function  and then displays the suggestions
   function submitLetterWords() {
     const letterInputs = document.querySelectorAll('.input-box');
     const newLetters = Array.from(letterInputs).map(input => input.value);
@@ -98,7 +98,7 @@ function App() {
         )}
 
           <WordOutputs/>
-          {/* <ClueWordInputSet /> */}
+          <ClueWordInputSet />
           <LetterGrid/>
           
         </div>
@@ -108,39 +108,3 @@ function App() {
 }
 
 export default App;
-
-
-
-
-// function getSuggestions(letters, words) {
-//   const encodedLetters = letters.join(',');
-//   const encodedWords = words.join(',');
-//   console.log(encodedLetters)
-//   console.log(encodedWords)
-
-//   // Return the promise from fetch
-    // only works if I hardcode localhost:5000
-//   return fetch('/get-suggestions', {
-//       method: 'POST',
-//       headers: {
-//           'Content-Type': 'application/x-www-form-urlencoded',
-//       },
-//       body: `letters=${encodeURIComponent(encodedLetters)}&words=${encodeURIComponent(encodedWords)}`
-//   })
-//     .then(response => {
-//       if (!response.ok) {
-//           throw new Error('Network response was not ok');
-//       }
-//       return response.json(); // This returns the parsed JSON response body
-//     })
-//     .then(data => {
-//         console.log(data); // Handle the received data
-//         // Assuming the data object contains a property named 'suggestions'
-//         const suggestions = data.suggestions;
-//         console.log(suggestions);
-//         // Further processing of the suggestions...
-//     })
-//     .catch(error => {
-//         console.error('Error fetching suggestions:', error);
-//     });
-// }
