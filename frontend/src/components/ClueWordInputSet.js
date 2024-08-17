@@ -38,8 +38,12 @@ function WordInputSet() {
   
     console.log("ClueWordInputSet 22", newClueWords, newClueGrades);
 
-    setWords(newClueWords);
-    setGrades(newClueGrades);
+    // setWords(newClueWords);
+    // setGrades(newClueGrades);
+
+    // for lazy testing
+    setWords(["pipelayer", "gallery", "combination", "satirical", "cape", "sapient"])
+    setGrades(["4", "0", "8", "0", "2", "4"])
 
     setIsLoading(true);
     setError(null);
