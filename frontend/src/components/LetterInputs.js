@@ -25,10 +25,10 @@ function LetterInputs () {
   };
 
   // auto-focus on the next input-box after a keystroke
-  const handleInput = (event, setLetter, nextInputId) => {
-    const value = event.target.value.toLowerCase();
+  const handleChange = (event, setLetter, nextInputId) => {
+    const value = event.target.value;
     if (/[a-zA-Z]/.test(value)) {
-      setLetter(value);
+      setLetter(value.toLowerCase());
       if (nextInputId) {
         document.getElementById(nextInputId).focus();
       }
@@ -36,9 +36,6 @@ function LetterInputs () {
       setLetter('');
     }
   };
-
-
-
 
   return (
     <div className="input-container">
@@ -49,7 +46,7 @@ function LetterInputs () {
         <p>Trust Letters</p>
         <input
           value={trustLetter1}
-          onInput={(e) => handleInput(e, setTrustLetter1, 'box2')}
+          onChange={(e) => handleChange(e, setTrustLetter1, 'box2')}
           onKeyDown={(e) => handleKeyDown(e, setTrustLetter1, null)}
           type="text"
           maxLength="1"
@@ -58,7 +55,7 @@ function LetterInputs () {
         />
         <input
           value={trustLetter2}
-          onInput={(e) => handleInput(e, setTrustLetter2, 'box3')}
+          onChange={(e) => handleChange(e, setTrustLetter2, 'box3')}
           onKeyDown={(e) => handleKeyDown(e, setTrustLetter2, 'box1')}
           type="text"
           maxLength="1"
@@ -67,7 +64,7 @@ function LetterInputs () {
         />
         <input
           value={trustLetter3}
-          onInput={(e) => handleInput(e, setTrustLetter3, 'box4')}
+          onChange={(e) => handleChange(e, setTrustLetter3, 'box4')}
           onKeyDown={(e) => handleKeyDown(e, setTrustLetter3, 'box2')}
           type="text"
           maxLength="1"
@@ -79,7 +76,7 @@ function LetterInputs () {
         <p>Amplify Letters</p>
         <input
           value={amplifyLetter1}
-          onInput={(e) => handleInput(e, setAmplifyLetter1, 'box5')}
+          onChange={(e) => handleChange(e, setAmplifyLetter1, 'box5')}
           onKeyDown={(e) => handleKeyDown(e, setAmplifyLetter1, 'box3')}
           type="text"
           maxLength="1"
@@ -88,7 +85,7 @@ function LetterInputs () {
         />
         <input
           value={amplifyLetter2}
-          onInput={(e) => handleInput(e, setAmplifyLetter2, 'box6')}
+          onChange={(e) => handleChange(e, setAmplifyLetter2, 'box6')}
           onKeyDown={(e) => handleKeyDown(e, setAmplifyLetter2, 'box4')}
           type="text"
           maxLength="1"
@@ -100,7 +97,7 @@ function LetterInputs () {
         <p>Suspicion Letters</p>
         <input
           value={suspicionLetter1}
-          onInput={(e) => handleInput(e, setSuspicionLetter1, null)}
+          onChange={(e) => handleChange(e, setSuspicionLetter1, null)}
           onKeyDown={(e) => handleKeyDown(e, setSuspicionLetter1, 'box5')}
           type="text"
           maxLength="1"

@@ -15,7 +15,7 @@ function LetterDropDown({id, onChange, letterList=[] }) { // Default to an empty
     <div className="letter-drop-down">
       <select name="letter" value={chosenLetter} onChange={handleChange}>
         <option label=" "></option> 
-        {letterList[id].map((letter, index) => (
+        {letterList[id] && letterList[id].map((letter, index) => (
           <option key={index} value={letter}>{letter}</option>
         ))}
       </select>
