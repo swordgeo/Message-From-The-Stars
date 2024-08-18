@@ -56,26 +56,32 @@
   /* unused colors, for reference */
   color: #0F5F78;
   color: #196660;
+  color: #5E8C8A;
+  color: #83AE92;
+  color: #D17163;
+  color: #2D2F5F;
+  color: #4b4e9b;
+  color: #9B9B8F;
+  color: #216E68;
+  color: #9fcbd8;
 
   /*generic colors*/
   background-color: #E0E0D6; 
   color: #675153;
-
 }
 
 .human-palette h1 {
-  color: #0F5F78; /*saturated space background*/
+  color: #5a997c; /*saturated space background*/
 }
 
 .human-palette input[type="text"], input[type="number"], textarea, select{
-  background-color: #196660;
-  color: #ffffff; /*TODO*/
+  background-color: #5E8C8A;
+  color: #b7cac9;
 }
 
 .human-palette button{
-  background-color: #ffffff; /*TODO*/
-  color: #ffffff; /*TODO*/
-
+  background-color: #D17163;
+  color: #e9e0e0;
   border-radius: 6px;
   box-shadow: none; 
 }
