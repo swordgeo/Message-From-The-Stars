@@ -2,6 +2,84 @@
   text-align: center;
 }
 
+.generic-palette{
+  background-color: #E0E0D6; /*keys*/
+  color: #675153;
+}
+
+.alien-palette
+{
+  /* unused colors, for reference */
+  color: #F2F3E5;
+  color: #C2B1B9;
+  color: #96828E;
+
+  color: #8D88C0; /* highlights between keys */
+  color: #60618F; /*space background 1*/
+  color: #575970; /*space background 2*/
+
+  color: #BBB2B3; /* trust gray 1*/
+  color: #8C959A; /* trust gray 2*/
+  color: #5D5972; /* trust gray 3*/
+
+  color: #A65274; /* trust highlight 1*/
+  color: #5f2f42; /* trust highlight 2*/
+
+  color: #D7DB87; /*wire 1 */
+  color: #564730; /* wire 1 lowlight*/
+
+  /*generic colors*/
+  background-color: #E0E0D6; 
+  color: #675153;
+
+}
+
+.alien-palette h1 {
+  color: #564787; /*saturated space background*/
+}
+
+.alien-palette input[type="text"], input[type="number"], textarea, select{
+  background-color: #A65274;
+  color: #5f2f42;
+}
+
+.alien-palette button{
+  background-color: #D7DB87;
+  color: #564730;
+
+  border-radius: 6px;
+  box-shadow: none; 
+}
+
+
+.human-palette{
+  /* unused colors, for reference */
+  color: #0F5F78;
+  color: #196660;
+
+  /*generic colors*/
+  background-color: #E0E0D6; 
+  color: #675153;
+
+}
+
+.human-palette h1 {
+  color: #0F5F78; /*saturated space background*/
+}
+
+.human-palette input[type="text"], input[type="number"], textarea, select{
+  background-color: #196660;
+  color: #ffffff; /*TODO*/
+}
+
+.human-palette button{
+  background-color: #ffffff; /*TODO*/
+  color: #ffffff; /*TODO*/
+
+  border-radius: 6px;
+  box-shadow: none; 
+}
+
 .App-logo {
   height: 40vmin;
   pointer-events: none;
