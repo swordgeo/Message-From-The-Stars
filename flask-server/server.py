@@ -80,6 +80,9 @@ def process_clues():
     except Exception as e:
         return jsonify(error=str(e)), 400
     
+  
+
+    
 
 # does nothing but serve as guidance/example between JS and Flask
 @app.route('/do-thing', methods=['POST'])

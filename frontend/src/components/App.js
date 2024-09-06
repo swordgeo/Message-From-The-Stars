@@ -8,11 +8,12 @@ import AlienWordInputs from './AlienWordInputs';
 import WordOutputs from './WordOutputs';
 import UseGetSuggestions from './GetSuggestions';
 import ClueWordInputSet from './ClueWordInputSet';
+import AutoGrader from './AutoGrader';
 
 
 function App() {
 
-  const [letters, setLetters] = useState([]);
+  const [letters, setLetters] = useState(['', '', '', '', '', '']);
   const [words, setWords] = useState([]);
   // const [suggestions, setSuggestions] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -70,9 +71,18 @@ function App() {
           <p>This tool can help your team by suggesting useful words to your alien player or by ruling out impossible letters for your human player(s)</p>
         </header>
         <div>
-          <LetterInputs/>
+        <LetterInputs 
+          letters={letters} 
+          onChange={(index, value) => {
+            const newLetters = letters.slice(0, 6); // Ensure we always have 6 elements
+            newLetters[index] = value;
+            setLetters(newLetters);
+          }}
+        />
           <AlienWordInputs/>
           <button onClick={submitLetterWords}>Submit Letters and Words</button>
+
+          <AutoGrader letters={letters} />
 
         {isLoading && <div>Loading...</div>}
         {error && <div>Error: {error.message}</div>}
@@ -97,6 +107,7 @@ function App() {
           </div>
         )}
 
+        <hr></hr>
           <WordOutputs/>
           <ClueWordInputSet />
           <LetterGrid/>

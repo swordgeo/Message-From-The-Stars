@@ -9,11 +9,11 @@ function AlienWordInputs() {
     return (
         <div id="alien-word-inputs">
             <input value={word1} onChange={e => setWord1(e.target.value)}
-                type="text" maxlength="20" class="word-input-box" pattern="[a-z]{20}"/>
+                type="text" maxlength="30" class="word-input-box" pattern="[a-z]{30}"/>
             <input value={word2} onChange={e => setWord2(e.target.value)}
-                type="text" maxlength="20" class="word-input-box" pattern="[a-z]{20}"/>
+                type="text" maxlength="30" class="word-input-box" pattern="[a-z]{30}"/>
             <input value={word3} onChange={e => setWord3(e.target.value)}
-                type="text" maxlength="20" class="word-input-box" pattern="[a-z]{20}"/>
+                type="text" maxlength="30" class="word-input-box" pattern="[a-z]{30}"/>
         </div>
     );
 };
