@@ -10,3 +10,7 @@ NPM setup:
 
 cd frontend 
 npm install
+
+to do:
+install bootstrap
+add validation for alien trust/sus/amp letters

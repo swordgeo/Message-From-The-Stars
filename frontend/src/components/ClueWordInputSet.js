@@ -86,7 +86,7 @@ function WordInputSet() {
             <div key={index}>{combination.join(', ')}</div>
           ))}
           <div>{filteredCombinations.length} total combinations</div>
-
+          <p>You can use these dropdown fields to filter the current possible letters to rule out or identify other letters in the code.<br/>If the total combinations reduces to zero, you may need to deselect some chosen letters.</p>
           {letterData.possible_letters && Array.from({ length: 6 }).map((_, index) => (
             <LetterDropDown 
               key={index} 

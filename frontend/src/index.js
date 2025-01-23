@@ -2,6 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './components/App';
 import reportWebVitals from './reportWebVitals';
+//import Popper from 'popper.js';
+
+//import '../node_modules/popper.js/dist/popper-utils.min.js';
+//import '../node_modules/bootstrap/dist/css/bootstrap.css';
+
+import "../node_modules/bootstrap/dist/css/bootstrap.min.css";
 
 console.log("index.js REACT_APP_API_URL:", process.env.REACT_APP_API_URL);  // Add this line
 

@@ -8,6 +8,7 @@ function AlienWordInputs() {
 
     return (
         <div id="alien-word-inputs">
+          <p>Submit the three words on your card that your teammates will need to guess later:</p>
             <input value={word1} onChange={e => setWord1(e.target.value)}
                 type="text" maxlength="30" class="word-input-box" pattern="[a-z]{30}"/>
             <input value={word2} onChange={e => setWord2(e.target.value)}

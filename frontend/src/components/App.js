@@ -5,7 +5,6 @@ import './App.css';
 import LetterGrid from './LetterGrid';
 import LetterInputs from './LetterInputs';
 import AlienWordInputs from './AlienWordInputs';
-import WordOutputs from './WordOutputs';
 import UseGetSuggestions from './GetSuggestions';
 import ClueWordInputSet from './ClueWordInputSet';
 import AutoGrader from './AutoGrader';
@@ -80,24 +79,32 @@ function App() {
           }}
         />
           <AlienWordInputs/>
+          <p>When your six letters and three words are ready, hit the submit button to get your results!</p>
           <button onClick={submitLetterWords}>Submit Letters and Words</button>
 
           <AutoGrader letters={letters} />
 
         {isLoading && <div>Loading...</div>}
         {error && <div>Error: {error.message}</div>}
-        {suggestions && (
+        {suggestions && ( // Check if there are suggestions to display
           <div>
-            {Object.keys(suggestions).map(word => (
+            {Object.keys(suggestions).map(word => ( // Iterate over each word in the suggestions object
               <div key={word}>
                 <h3>{word}</h3>
                 <ul>
-                  {Array.isArray(suggestions[word]) ? (
-                    suggestions[word].map((suggestion, index) => (
-                      <li key={index}>
-                        {suggestion.suggestion} (Grade: {suggestion.grade}, Density: {suggestion.density.toFixed(2)})
-                      </li>
-                    ))
+                {Array.isArray(suggestions[word]) ? ( // Check if the value for the word is an array
+            suggestions[word].map((suggestion, index) => ( // Map over each suggestion for the current word
+              <li key={index}>
+                {suggestion.suggestion.split('').map((char, i) => ( //Split the suggestion string into individual characters and map over them
+                // Check if current character is in letters array
+                // If so, <b><u> that sucker so aliens can easily track their relevant letters
+                  letters.includes(char) ? 
+                  <b key={i}><u key={i}>{char}</u></b> : 
+                    <span key={i}>{char}</span>
+                ))}
+                {' '}(Grade: {suggestion.grade}, Density: {suggestion.density.toFixed(2)})
+              </li>
+            ))
                   ) : (
                     <li>No suggestions available</li>
                   )}
@@ -107,11 +114,26 @@ function App() {
           </div>
         )}
 
+
+
         <hr></hr>
-          <WordOutputs/>
           <ClueWordInputSet />
           <LetterGrid/>
+
+          <button class="btn btn-primary">BOOTSTRAP</button>
           
+          <div class="dropdown">
+            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Dropdown button
+            </button>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else here</a>
+            </div>
+          </div>
+
+
         </div>
         
       </div>
