@@ -53,6 +53,8 @@ def process_clues():
         for item in data:
             word = item.get('word').upper() # our original code used uppercase words
             grade = item.get('grade')
+            if grade == '': # if users leave an empty string, interpret that as 0
+               grade = 0
             if word:
                 processed_data[word] = int(grade) #make sure grades presented as ints and not strings
         
@@ -70,7 +72,6 @@ def process_clues():
           possible_letters, distinct_combinations = produce_valid_letters(processed_data)
         
         session['possible_letters'] = possible_letters
-
         
         # Return the processed data as a JSON response
         return jsonify({
@@ -80,7 +81,17 @@ def process_clues():
     except Exception as e:
         return jsonify(error=str(e)), 400
     
-  
+
+@app.route('/reset-clues', methods=['DELETE'])
+def reset_clues():
+    if 'possible_letters' in session:
+      print(session['possible_letters'])
+      session.pop("possible_letters", None)  # Remove if exists
+      if 'possible_letters' in session:
+        print(session['possible_letters'])
+    return jsonify({"message": "Session reset successful"}), 200
+
+
 
     
 
@@ -94,4 +105,4 @@ def do_thing():
 
 
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+  app.run(debug=True, port=5000)

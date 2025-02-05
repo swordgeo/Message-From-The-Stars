@@ -1,13 +1,16 @@
 import { useState, useEffect } from 'react';
 
 
-  function UseGetSuggestions(letters, words, setIsLoading, setError) {
+function UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError) {
     const [data, setData] = useState(null);
     const API_URL = process.env.REACT_APP_API_URL;
 
     // Return the promise from fetch
     useEffect(() => {
-      if (letters.length === 0 || words.length === 0) return;
+      if (!fetchTrigger || letters.length === 0 || words.length === 0) return;
+
+      setIsLoading(true);
+      setError(null);
 
       const encodedLetters = letters.join(',');
       const encodedWords = words.join(',');
@@ -24,16 +27,19 @@ import { useState, useEffect } from 'react';
     .then(data => {
       console.log("Fetched data:", data); // Log the fetched data
       setData(data.suggestions); // Ensure we are setting the correct part of the response
-      setIsLoading(false);
     })
     .catch(error => {
       console.error('Error fetching suggestions:', error);
       setError(error);
+    })
+    .finally(() => {
       setIsLoading(false);
     });
-  }, [letters, words, API_URL, setIsLoading, setError]);
+  // }, [letters, words, API_URL, setIsLoading, setError]);
+  }, [fetchTrigger]); // Only run when fetchTrigger changes
+
 
       return data;
-  }
+}
 
 export default UseGetSuggestions;

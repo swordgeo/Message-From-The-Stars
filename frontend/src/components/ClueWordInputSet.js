@@ -11,7 +11,7 @@ function WordInputSet() {
   const [fetchTrigger, setFetchTrigger] = useState(false);
   const [selectedLetters, setSelectedLetters] = useState(Array(6).fill('')); // Initialize with empty strings
 
-
+  // now we call the API call
   const letterData = UseGetPossibleLetters(fetchTrigger ? words : [], fetchTrigger ? grades : [], setIsLoading, setError);
   // letterData.possible_letters and data.distinct_combinations
 
@@ -29,6 +29,39 @@ function WordInputSet() {
   ) : [];
 
 
+  function resetClueWords() {
+    fetch(`${process.env.REACT_APP_API_URL}/reset-clues`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      }
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Failed to reset possible letters/distinct combinations');
+      }
+      return response.json();
+    })
+    .then(() => {
+      console.log("Successfully reset possible letters and combinations.");
+      // reset frontend state
+      setWords({});
+      setGrades({});
+      setIsLoading(false);
+      setError(null);
+      setFetchTrigger(false); // Prevent UseGetPossibleLetters from refetching
+
+      // Force letterData to clear by setting an empty state
+    setSelectedLetters(Array(6).fill('')); // Reset selected letter filters
+
+    })
+    .catch(error => {
+      console.error("Error resetting possible letters/distinct combinations:", error);
+      setError(error);
+    });
+  }
+
+
   function submitClueWords() {
     const clueWordInputs = document.querySelectorAll('.clue-word-input-box');
     const newClueWords = Array.from(clueWordInputs).map(input => input.value);
@@ -36,7 +69,7 @@ function WordInputSet() {
     const clueGradeInputs = document.querySelectorAll('.clue-grade-input-box');
     const newClueGrades = Array.from(clueGradeInputs).map(input => input.value);
   
-    console.log("ClueWordInputSet 22", newClueWords, newClueGrades);
+    console.log("ClueWordInputSet.js submitClueWords()", newClueWords, newClueGrades);
 
     setWords(newClueWords);
     setGrades(newClueGrades);
@@ -50,6 +83,7 @@ function WordInputSet() {
     setFetchTrigger(true); //trigger the fetch
   }
 
+
   return (
     <section id="human-half">
       <div className="word-input-set">
@@ -61,6 +95,7 @@ function WordInputSet() {
           there will be thousands of possible letter configurations to consider and processing will take a long while.
           <br/>That said, this program remembers the results of your last use, so subsequent words should not take as long.</p>
         <button onClick={submitClueWords}>Submit</button>
+        <button onClick={resetClueWords}>Reset</button>
       </div>
 
       <div>

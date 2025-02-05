@@ -275,13 +275,13 @@ def process_words(words_str):
 
     for word in words:
         # Two separate API calls
-        # word_associations = get_word_associations(word)
-        # word_synonyms = get_synonyms(word)
         chatgpt_suggestions = get_chatgpt_suggestions(word)
+        # synonym_suggestions = get_synonyms(word) # we might keep this one out - it's suggestions are just bad
+        association_suggestions = get_word_associations(word)
         # If successful, add the word to the collected_words list
         # collected_words.append((word, word_associations+word_synonyms))
         
-        collected_words.append((word, chatgpt_suggestions))
+        collected_words.append((word, chatgpt_suggestions + association_suggestions))
         # Optionally, print the associations to confirm success
         # print(f"Associations for '{word}': {word_associations}")
             

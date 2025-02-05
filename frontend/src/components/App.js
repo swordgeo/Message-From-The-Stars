@@ -22,7 +22,12 @@ function App() {
   // const API_URL = process.env.REACT_APP_API_URL;
   // console.log("API_URL:", API_URL);
 
-  const suggestions = UseGetSuggestions(fetchTrigger ? letters : [], fetchTrigger ? words : [], setIsLoading, setError);
+  // const suggestions = UseGetSuggestions(fetchTrigger, setIsLoading, setError);
+
+  const suggestions = UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError);
+
+
+
 
   //something to check for duped input letters/words
   const hasDuplicates = (array) => {
@@ -30,7 +35,7 @@ function App() {
   };
 
 
-  // takes in letters and words from HTML, posts them to Flask function  and then displays the suggestions
+  // takes in letters and words from HTML, posts them to Flask function and then displays the suggestions
   function submitLetterWords() {
     const letterInputs = document.querySelectorAll('.input-box');
     const newLetters = Array.from(letterInputs).map(input => input.value);
@@ -53,7 +58,14 @@ function App() {
 
     setIsLoading(true);
     setError(null);
-    setFetchTrigger(true); //trigger the fetch
+
+    // Reset fetchTrigger to false first to ensure re-trigger works
+    setFetchTrigger(false);
+
+    // Ensure the state update happens properly
+    setTimeout(() => {
+      setFetchTrigger(true); //trigger the fetch
+    }, 0);
   }
 
   // if (isLoading) return <div>Loading...</div>;

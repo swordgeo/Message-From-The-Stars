@@ -15,10 +15,27 @@ function ClueWordInput(id, onChange) {
         pattern="[a-z]{20}" 
         placeholder="Enter word"
       />
-      <input 
+      {/* <input 
         value={grade} 
         onChange={e => setGrade(parseInt(e.target.value, 10) || 0)} // Parse the input to integer
         type="number" 
+        class="clue-grade-input-box"
+      /> */}
+      <input 
+        value={grade} 
+        onChange={e => {
+          const input = e.target.value;
+          // Allow empty input or a single "-" (preparing to enter negative number)
+          if (input === '' || input === '-') {
+            setGrade(input);
+          } else {
+            const parsed = parseInt(input, 10);
+            if (!isNaN(parsed)) {
+              setGrade(parsed);
+            }
+          }
+        }}
+        type="text"  // Change to text to allow natural input
         class="clue-grade-input-box"
       />
     </div>
