@@ -43,7 +43,6 @@ function WordInputSet() {
     console.log(sessionStorage.getItem("possible_letters"));
     sessionStorage.removeItem("possible_letters");
     console.log(sessionStorage.getItem("possible_letters"));
-
     setFetchTrigger(false); // reset the state so we don't ignore the clear
   }
 

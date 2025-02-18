@@ -12,18 +12,11 @@ import AutoGrader from './AutoGrader';
 
 
 function App() {
-
   const [letters, setLetters] = useState(['', '', '', '', '', '']);
   const [words, setWords] = useState([]);
-  // const [suggestions, setSuggestions] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fetchTrigger, setFetchTrigger] = useState(false);
-
-  // const API_URL = process.env.REACT_APP_API_URL;
-  // console.log("API_URL:", API_URL);
-
-  // const suggestions = UseGetSuggestions(fetchTrigger, setIsLoading, setError);
 
   const suggestions = UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError);
 
@@ -68,12 +61,6 @@ function App() {
       setFetchTrigger(true); //trigger the fetch
     }, 0);
   }
-
-  // if (isLoading) return <div>Loading...</div>;
-  // if (error) return <div>Error: {error.message}</div>;
-  
-  // console.log("Suggestions:", suggestions); // Log the suggestions state
-  
 
 
   return (
@@ -128,7 +115,6 @@ function App() {
         )}
 
 
-
         <hr></hr>
           <ClueWordInputSet />
           <LetterGrid/>
@@ -143,7 +129,7 @@ function App() {
               <a class="dropdown-item" href="#">Action</a>
               <a class="dropdown-item" href="#">Another action</a>
               <a class="dropdown-item" href="#">Something else here</a>
-            </div>
+            </div> 
           </div>
 
 

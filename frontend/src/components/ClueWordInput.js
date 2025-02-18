@@ -15,12 +15,6 @@ function ClueWordInput(id, onChange) {
         pattern="[a-z]{20}" 
         placeholder="Enter word"
       />
-      {/* <input 
-        value={grade} 
-        onChange={e => setGrade(parseInt(e.target.value, 10) || 0)} // Parse the input to integer
-        type="number" 
-        class="clue-grade-input-box"
-      /> */}
       <input 
         value={grade} 
         onChange={e => {

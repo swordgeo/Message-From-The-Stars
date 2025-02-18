@@ -35,15 +35,12 @@ function AutoGrader({ letters }) {
     const amplifyLetters = letters.slice(3, 5); // Indices 3, 4
     const suspicionLetter = letters[5]; // Index 5
 
-    // console.log(trustLetters, amplifyLetters, suspicionLetter);
-
     let trustCount = 0;
     let amplifyCount = 0;
     let suspicionCount = 0;
 
     for (let i = 0; i < word.length; i++) {
       const letter = word[i];
-      // console.log(letter, word[letter])
       if (trustLetters.includes(letter)) {
         trustCount += 1
       } else if (amplifyLetters.includes(letter)) {
@@ -52,8 +49,6 @@ function AutoGrader({ letters }) {
         suspicionCount = 1 // count doesn't matter; only if it exists or not
       }
     }
-    
-    // console.log(trustCount, amplifyCount, suspicionCount);
 
     let grade = 0;
     // Apply grading rules
@@ -66,8 +61,6 @@ function AutoGrader({ letters }) {
     // Return the grade as a message
     return `Grade: ${grade}`;
   } //end of gradeWord()
-
-
 
 
   useEffect(() => {
