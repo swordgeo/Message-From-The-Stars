@@ -1,6 +1,7 @@
 //import React, { useState, useEffect } from 'react';
 import React, { useState, useEffect, Component } from "react";
 import './App.css';
+import './alien.css';
 
 import LetterGrid from './LetterGrid';
 import LetterInputs from './LetterInputs';
@@ -37,7 +38,7 @@ function App() {
 
   // takes in letters and words from HTML, posts them to Flask function and then displays the suggestions
   function submitLetterWords() {
-    const letterInputs = document.querySelectorAll('.input-box');
+    const letterInputs = document.querySelectorAll('.alien-letter-input-box');
     const newLetters = Array.from(letterInputs).map(input => input.value);
     
     const wordsInputs = document.querySelectorAll('.word-input-box');

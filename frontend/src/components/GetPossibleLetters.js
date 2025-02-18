@@ -1,11 +1,21 @@
 import { useState, useEffect } from 'react';
 
-function UseGetPossibleLetters(words, grades, setIsLoading, setError) {
+function UseGetPossibleLetters(words = [], grades = [], setIsLoading, setError) {
   const [data, setData] = useState(null);
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
     if (words.length === 0 || grades.length === 0) return;
+
+    let storedPossibleLetters = null;
+    try {
+      const stored = sessionStorage.getItem("possible_letters");
+      storedPossibleLetters = stored ? JSON.parse(stored) : null;
+      console.log("Retrieved from sessionStorage:", storedPossibleLetters);
+    } catch (error) {
+      console.error("Error parsing sessionStorage:", error);
+      storedPossibleLetters = null;
+    }
 
     // Combine words and grades into a single list of objects
     const combinedData = words.map((word, index) => ({
@@ -13,8 +23,13 @@ function UseGetPossibleLetters(words, grades, setIsLoading, setError) {
       grade: grades[index]
     })).filter(item => item.word); // Filter out items where word is null or empty
 
+    const requestData = {
+      wordsData: combinedData,
+      possible_letters: storedPossibleLetters
+    };
+
     // Encode the data as JSON
-    const encodedData = JSON.stringify(combinedData);
+    const encodedData = JSON.stringify(requestData);
 
     console.log("Beginning fetch with combined data:", encodedData);
 

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import ClueWordInput from './ClueWordInput';
 import UseGetPossibleLetters from './GetPossibleLetters';
 import LetterDropDown from './LetterDropDown';
@@ -13,12 +13,21 @@ function WordInputSet() {
 
   // now we call the API call
   const letterData = UseGetPossibleLetters(fetchTrigger ? words : [], fetchTrigger ? grades : [], setIsLoading, setError);
+  console.log("ClueWordInputSet.js");
+  console.log(letterData.possible_letters);
+  console.log(letterData.distinct_combinations);
   // letterData.possible_letters and data.distinct_combinations
+
+  useEffect(() => {
+    if (letterData.possible_letters && letterData.possible_letters.length > 0) {
+      sessionStorage.setItem("possible_letters", JSON.stringify(letterData.possible_letters)); // sessionStorage only saves it in the current tab; refreshing or new window won't keep the data
+    }
+  }, [letterData.possible_letters]); // Only run when possible_letters changes
 
   const handleLetterChange = (id, letter) => {
     setSelectedLetters(prevLetters => {
       const newSelectedLetters = [...prevLetters];
-      newSelectedLetters[id] = letter; // Assuming id is a number from 0 to 5
+      newSelectedLetters[id] = letter;
       return newSelectedLetters;
     });
   };
@@ -30,35 +39,12 @@ function WordInputSet() {
 
 
   function resetClueWords() {
-    fetch(`${process.env.REACT_APP_API_URL}/reset-clues`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      }
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Failed to reset possible letters/distinct combinations');
-      }
-      return response.json();
-    })
-    .then(() => {
-      console.log("Successfully reset possible letters and combinations.");
-      // reset frontend state
-      setWords({});
-      setGrades({});
-      setIsLoading(false);
-      setError(null);
-      setFetchTrigger(false); // Prevent UseGetPossibleLetters from refetching
+    console.log("Reseting possible_letters")
+    console.log(sessionStorage.getItem("possible_letters"));
+    sessionStorage.removeItem("possible_letters");
+    console.log(sessionStorage.getItem("possible_letters"));
 
-      // Force letterData to clear by setting an empty state
-    setSelectedLetters(Array(6).fill('')); // Reset selected letter filters
-
-    })
-    .catch(error => {
-      console.error("Error resetting possible letters/distinct combinations:", error);
-      setError(error);
-    });
+    setFetchTrigger(false); // reset the state so we don't ignore the clear
   }
 
 

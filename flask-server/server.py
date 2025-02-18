@@ -5,6 +5,7 @@ from flask_cors import CORS
 
 # python imports
 import os
+import re
 
 # file imports
 from logic.alien import produce_suggestions # produce_suggestions
@@ -13,9 +14,10 @@ from logic.human import produce_valid_letters
 load_dotenv()
 app = Flask(__name__, template_folder="../src", static_folder="../frontend/src/index.js")
 CORS(app)  # Apply CORS to all routes
-app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
-app.config['SESSION_TYPE'] = 'filesystem'
-Session(app)
+# app.config['SECRET_KEY'] = os.getenv('SECRET_KEY')
+# app.config['SESSION_TYPE'] = 'filesystem'
+# app.config['SESSION_PERMANENT'] = False  # Ensures session data is not treated as permanent
+# Session(app)
 
 @app.route('/', defaults={'path': ''})
 @app.route('/<path:path>')
@@ -46,32 +48,49 @@ def process_clues():
         
         # Print the received data for debugging
         print("Received data:", data)
+
+        # At this point our data variable is now a two-parter
+        # Received data: {'wordsData': [{'word': 'leedle', 'grade': '-12'}, {'word': 'pimple', 'grade': '6'}], 'possible_letters': []}
+        # So we need to split it up first
+        word_data = data.get("wordsData", [])  # Better to do it this way instead of word_data = data[0] in case the frontend ever flips them by accident
+        possible_letters_data = data.get("possible_letters", [])
+
+        if not word_data or not isinstance(word_data, list):  # Ensure word_data is a list
+            return jsonify({'possible_letters': [], 'distinct_combinations': []})
         
         # Process the data as needed
         # Assuming data is a list of dictionaries with 'word' and 'grade' keys
         processed_data = {}
-        for item in data:
-            word = item.get('word').upper() # our original code used uppercase words
-            grade = item.get('grade')
-            if grade == '': # if users leave an empty string, interpret that as 0
-               grade = 0
+        for item in word_data:
+            word = item.get('word', '').strip().upper()  # Remove spaces and convert to uppercase (original code uses uppercase)
+            word = re.sub(r'[^A-Z]', '', word)  # Remove non-alphabetic characters
+
+            grade = item.get('grade', '0')  # Default to '0' if missing
+            try:
+              grade = int(grade) # Convert to integer
+            except ValueError:
+              grade = 0
+
             if word:
-                processed_data[word] = int(grade) #make sure grades presented as ints and not strings
+              processed_data[word] = grade
         
         # Print the processed data for debugging
         print("Processed data:", processed_data)
 
+        if not processed_data:  # If no valid words remain, return empty result
+            print("Only invalid words; bailing")
+            return jsonify({'possible_letters': [], 'distinct_combinations': []})
 
         # Processed data: {'DOG': 2, 'SANDWICH': -3}
         # Pass this processed data into the human scripts.
 
         # check if we have an older array of possible_letters to start with
-        if 'possible_letters' in session:
-          possible_letters, distinct_combinations = produce_valid_letters(processed_data, session['possible_letters'])
-        else:
+        if possible_letters_data is None:
           possible_letters, distinct_combinations = produce_valid_letters(processed_data)
+        else:
+          possible_letters, distinct_combinations = produce_valid_letters(processed_data, possible_letters_data)
         
-        session['possible_letters'] = possible_letters
+
         
         # Return the processed data as a JSON response
         return jsonify({
@@ -82,14 +101,15 @@ def process_clues():
         return jsonify(error=str(e)), 400
     
 
-@app.route('/reset-clues', methods=['DELETE'])
-def reset_clues():
-    if 'possible_letters' in session:
-      print(session['possible_letters'])
-      session.pop("possible_letters", None)  # Remove if exists
-      if 'possible_letters' in session:
-        print(session['possible_letters'])
-    return jsonify({"message": "Session reset successful"}), 200
+# @app.route('/reset-clues', methods=['DELETE'])
+# def reset_clues():
+#     print("Session before reset:", dict(session))  # Debug session before reset
+
+#     session.pop("possible_letters", None)  # Remove if exists
+#     session.modified = True  # Ensure Flask knows the session changed
+
+#     print("After deletion, session keys:", dict(session))
+#     return jsonify({"message": "Session reset successful"}), 200
 
 
 

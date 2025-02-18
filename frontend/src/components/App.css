@@ -120,3 +120,12 @@
     transform: rotate(360deg);
   }
 }
+
+
+
+
+
+.center {
+  text-align: center;
+  justify-content: center;
+}

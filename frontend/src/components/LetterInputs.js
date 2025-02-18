@@ -38,73 +38,77 @@ function LetterInputs ({ letters, onChange }) {
   };
 
   return (
-    <div className="input-container">
-      <p class="center">Make sure your letters are assigned correctly; 
+    <div className="input-container" class="container-fluid center">
+      <p>Make sure your letters are assigned correctly; 
         this program will not ensure your letters are valid.</p>
       <p>If one of your words comes back with no results, it could be that you have a typo, our APIs have no suggestions for you (rare but happens) or our APIs have merely timed out and you should try again in a few seconds.</p>
-      <div id="trust-letter-inputs" className="key-letter-grouping">
-        <p>Trust Letters</p>
-        <input
-          value={letters[0] || ''}
-          onChange={(e) => handleChange(e, null, 'box2', 0)}
-          onKeyDown={(e) => handleKeyDown(e, null, null)}
-          type="text"
-          maxLength="1"
-          className="input-box"
-          id="box1"
-        />
-        <input
-          value={letters[1] || ''}
-          onChange={(e) => handleChange(e, null, 'box3', 1)}
-          onKeyDown={(e) => handleKeyDown(e, null, 'box1')}
-          type="text"
-          maxLength="1"
-          className="input-box"
-          id="box2"
-        />
-        <input
-          value={letters[2] || ''}
-          onChange={(e) => handleChange(e, null, 'box4', 2)}
-          onKeyDown={(e) => handleKeyDown(e, null, 'box2')}
-          type="text"
-          maxLength="1"
-          className="input-box"
-          id="box3"
-        />
-      </div>
-      <div id="amplify-letter-inputs" className="key-letter-grouping">
-        <p>Amplify Letters</p>
-        <input
-          value={letters[3] || ''}
-          onChange={(e) => handleChange(e, null, 'box5', 3)}
-          onKeyDown={(e) => handleKeyDown(e, null, 'box3')}
-          type="text"
-          maxLength="1"
-          className="input-box"
-          id="box4"
-        />
-        <input
-          value={letters[4] || ''}
-          onChange={(e) => handleChange(e, null, 'box6', 4)}
-          onKeyDown={(e) => handleKeyDown(e, null, 'box4')}
-          type="text"
-          maxLength="1"
-          className="input-box"
-          id="box5"
-        />
-      </div>
-      <div id="suspicion-letter-inputs" className="key-letter-grouping">
-        <p>Suspicion Letters</p>
-        <input
-          value={letters[5] || ''}
-          onChange={(e) => handleChange(e, null, null, 5)}
-          onKeyDown={(e) => handleKeyDown(e, null, 'box5')}
-          type="text"
-          maxLength="1"
-          className="input-box"
-          id="box6"
-        />
-      </div>
+      <div class="row center">
+        <div id="trust-letter-inputs" className="key-letter-grouping" class="col-auto">
+          <p>Trust Letters</p>
+          <input
+            value={letters[0] || ''}
+            onChange={(e) => handleChange(e, null, 'box2', 0)}
+            onKeyDown={(e) => handleKeyDown(e, null, null)}
+            type="text"
+            maxLength="1"
+            className="alien-letter-input-box" 
+            id="box1"
+          />
+          <input
+            value={letters[1] || ''}
+            onChange={(e) => handleChange(e, null, 'box3', 1)}
+            onKeyDown={(e) => handleKeyDown(e, null, 'box1')}
+            type="text"
+            maxLength="1"
+            className="alien-letter-input-box"
+            id="box2"
+          />
+          <input
+            value={letters[2] || ''}
+            onChange={(e) => handleChange(e, null, 'box4', 2)}
+            onKeyDown={(e) => handleKeyDown(e, null, 'box2')}
+            type="text"
+            maxLength="1"
+            className="alien-letter-input-box"
+            id="box3"
+          />
+        </div> {/* trust-letter-inputs */}
+        <div id="amplify-letter-inputs" className="key-letter-grouping" class="col-auto">
+          <p>Amplify Letters</p>
+          <input
+            value={letters[3] || ''}
+            onChange={(e) => handleChange(e, null, 'box5', 3)}
+            onKeyDown={(e) => handleKeyDown(e, null, 'box3')}
+            type="text"
+            maxLength="1"
+            className="alien-letter-input-box"
+            id="box4"
+          />
+          <input
+            value={letters[4] || ''}
+            onChange={(e) => handleChange(e, null, 'box6', 4)}
+            onKeyDown={(e) => handleKeyDown(e, null, 'box4')}
+            type="text"
+            maxLength="1"
+            className="alien-letter-input-box"
+            id="box5"
+          />
+        </div> {/* amplify-letter-inputs */}
+        <div id="suspicion-letter-inputs" className="key-letter-grouping" class="col-auto">
+          <p>Suspicion Letter</p>
+          <input
+            value={letters[5] || ''}
+            onChange={(e) => handleChange(e, null, null, 5)}
+            onKeyDown={(e) => handleKeyDown(e, null, 'box5')}
+            type="text"
+            maxLength="1"
+            className="alien-letter-input-box"
+            id="box6"
+          />
+        </div> {/* suspicion-letter-inputs */}
+        
+      </div> {/* row center */}
+      
     </div>
   );
 };

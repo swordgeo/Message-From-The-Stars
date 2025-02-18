@@ -3,7 +3,7 @@
 
 // script.js
 document.addEventListener('DOMContentLoaded', () => {
-  const inputs = document.querySelectorAll('.input-box');
+  const inputs = document.querySelectorAll('.alien-letter-input-box');
 
   inputs.forEach((input, index) => {
       input.addEventListener('input', (event) => {

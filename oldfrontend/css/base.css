@@ -54,7 +54,7 @@ table.uiTable th, table.uiTable td{
   justify-content: center;
 }
 
-.input-box {
+.alien-letter-input-box {
   /* display: flex;
   flex-direction: row; */
   width: 40px;
@@ -73,7 +73,7 @@ table.uiTable th, table.uiTable td{
   flex-direction: row;
 }
 
-.input-box:focus {
+.alien-letter-input-box:focus {
   border-color: #007BFF;
 }
 /* end of alien keyletter inputs */
