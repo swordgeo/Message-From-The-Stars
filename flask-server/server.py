@@ -1,14 +1,27 @@
-from flask import Flask, render_template, request, jsonify, redirect, url_for, session
+from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from flask_cors import CORS
 
 # python imports
 import os
 import re
+import sys
+import traceback
 
 # file imports
-from logic.alien import produce_suggestions
-from logic.human import produce_valid_letters
+# file imports
+try:
+    from logic.alien import produce_suggestions
+    from logic.human import produce_valid_letters
+    print("Successfully imported logic modules")
+except Exception as e:
+    print(f"Error importing logic modules: {str(e)}")
+    print(f"Current working directory: {os.getcwd()}")
+    print(f"Python path: {sys.path}")
+    print(f"Directory contents: {os.listdir('.')}")
+    if os.path.exists('logic'):
+        print(f"Logic directory contents: {os.listdir('logic')}")
+    traceback.print_exc()
 
 load_dotenv()
 # app = Flask(__name__, template_folder="../src", static_folder="../frontend/src/index.js")
@@ -18,17 +31,20 @@ CORS(app)  # Apply CORS to all routes
 
 @app.route('/api/get-suggestions', methods=['POST'])
 def get_suggestions():
-    letters_str = request.form.get('letters', '')
-    words_str = request.form.get('words', '')
-    print(letters_str)
-    print(words_str)
     try:
-        final_suggestions = produce_suggestions(letters_str, words_str)
-        # final_suggestions = {'poop': [{'suggestion': 'turd', 'grade': -3, 'density': 1.0}, {'suggestion': 'shit', 'grade': 4, 'density': 0.75}], 'blood': [{'suggestion': 'pressure', 'grade': -4, 'density': 0.625}, {'suggestion': 'artery', 'grade': -1, 'density': 0.5}], 'cat': [{'suggestion': 'cheetah', 'grade': 4, 'density': 0.42857142857142855}, {'suggestion': 'tiger', 'grade': -1, 'density': 0.4}]}
-        print(final_suggestions)
-        return jsonify(suggestions = final_suggestions)
+      letters_str = request.form.get('letters', '')
+      words_str = request.form.get('words', '')
+      print(letters_str)
+      print(words_str)
+    
+      final_suggestions = produce_suggestions(letters_str, words_str)
+      # final_suggestions = {'poop': [{'suggestion': 'turd', 'grade': -3, 'density': 1.0}, {'suggestion': 'shit', 'grade': 4, 'density': 0.75}], 'blood': [{'suggestion': 'pressure', 'grade': -4, 'density': 0.625}, {'suggestion': 'artery', 'grade': -1, 'density': 0.5}], 'cat': [{'suggestion': 'cheetah', 'grade': 4, 'density': 0.42857142857142855}, {'suggestion': 'tiger', 'grade': -1, 'density': 0.4}]}
+      print(final_suggestions)
+      return jsonify(suggestions = final_suggestions)
     except ValueError as e:
-        return jsonify(error=str(e)), 400
+      print(f"Error in get-suggestions: {str(e)}")
+      traceback.print_exc()
+      return jsonify(error=str(e), trace=traceback.format_exc()), 500
     
 
 @app.route('/api/process-clues', methods=['POST'])
@@ -83,7 +99,17 @@ def process_clues():
           'distinct_combinations': distinct_combinations
         })
     except Exception as e:
-        return jsonify(error=str(e)), 400
+        print(f"Error in process-clues: {str(e)}")
+        traceback.print_exc()
+        return jsonify(error=str(e), trace=traceback.format_exc()), 500
+    
+
+@app.route('/api/test', methods=['GET'])
+def test():
+    try:
+        return jsonify({"message": "Backend is working!", "cwd": os.getcwd(), "files": os.listdir('.')})
+    except Exception as e:
+        return jsonify({"error": str(e), "trace": traceback.format_exc()}), 500
 
 
 # Only for local development
