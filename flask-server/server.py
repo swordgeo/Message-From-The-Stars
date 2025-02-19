@@ -13,12 +13,18 @@ from logic.human import produce_valid_letters
 load_dotenv()
 # app = Flask(__name__, template_folder="../src", static_folder="../frontend/src/index.js")
 app = Flask(__name__)
-CORS(app)  # Apply CORS to all routes
 
-# @app.route('/', defaults={'path': ''})
-# @app.route('/<path:path>')
-# def catch_all(path):
-#     return "Not Found", 404
+CORS(app, resources={
+    r"/api/*": {
+        "origins": [
+            "https://message-from-the-stars.vercel.app",  # production frontend; we'll have to change this if we get a domain name
+            # have to change it in vercel.json too
+            "http://localhost:3000"  # local development frontend
+        ],
+        "methods": ["POST", "OPTIONS"],
+        "allow_headers": ["Content-Type"]
+    }
+})
 
 
 @app.route('/api/get-suggestions', methods=['POST'])
