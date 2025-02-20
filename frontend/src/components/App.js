@@ -32,10 +32,10 @@ function App() {
   // takes in letters and words from HTML, posts them to Flask function and then displays the suggestions
   function submitLetterWords() {
     const letterInputs = document.querySelectorAll('.alien-letter-input-box');
-    const newLetters = Array.from(letterInputs).map(input => input.value);
+    const newLetters = Array.from(letterInputs).map(input => input.value.toLowerCase());
     
     const wordsInputs = document.querySelectorAll('.word-input-box');
-    const newWords = Array.from(wordsInputs).map(input => input.value);
+    const newWords = Array.from(wordsInputs).map(input => input.value.toLowerCase());
 
     if (hasDuplicates(newLetters)) {
       setError(new Error("All six letters must be distinct."));
