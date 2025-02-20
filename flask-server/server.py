@@ -38,7 +38,7 @@ def get_suggestions():
       print(words_str)
     
       final_suggestions = produce_suggestions(letters_str, words_str)
-      # final_suggestions = {'poop': [{'suggestion': 'turd', 'grade': -3, 'density': 1.0}, {'suggestion': 'shit', 'grade': 4, 'density': 0.75}], 'blood': [{'suggestion': 'pressure', 'grade': -4, 'density': 0.625}, {'suggestion': 'artery', 'grade': -1, 'density': 0.5}], 'cat': [{'suggestion': 'cheetah', 'grade': 4, 'density': 0.42857142857142855}, {'suggestion': 'tiger', 'grade': -1, 'density': 0.4}]}
+      # final_suggestions = {'poop': [{'suggestion': 'turd', 'grade': -3, 'density': 1.0}, 'blood': [{'suggestion': 'pressure', 'grade': -4, 'density': 0.625}, {'suggestion': 'artery', 'grade': -1, 'density': 0.5}], 'cat': [{'suggestion': 'cheetah', 'grade': 4, 'density': 0.42857142857142855}, {'suggestion': 'tiger', 'grade': -1, 'density': 0.4}]}
       print(final_suggestions)
       return jsonify(suggestions = final_suggestions)
     except ValueError as e:
@@ -81,14 +81,21 @@ def process_clues():
               processed_data[word] = grade
         
         # Print the processed data for debugging
-        # print("Processed data:", processed_data)
+        print("Processed data:", processed_data)
 
         if not processed_data:  # If no valid words remain, return empty result
-            # print("Only invalid words; bailing")
+            print("Only invalid words; bailing")
             return jsonify({'possible_letters': [], 'distinct_combinations': []})
+        
+        # Check if possible_letters_data has any empty lists
+        has_empty_list = (
+            isinstance(possible_letters_data, list) and 
+            any(isinstance(sublist, list) and len(sublist) == 0 
+                for sublist in possible_letters_data)
+        )
 
         # pass to human scripts
-        if possible_letters_data is None:
+        if possible_letters_data is None or has_empty_list:
           possible_letters, distinct_combinations = produce_valid_letters(processed_data)
         else:
           possible_letters, distinct_combinations = produce_valid_letters(processed_data, possible_letters_data)

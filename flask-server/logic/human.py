@@ -163,7 +163,12 @@ def solveWordGroup(wordGroup):
 # solveWordGroup modified for frontend integration
 # We have the ability to pass in the last final array of possibleLetters
 #   (allows us to save resources not starting from scratch with each new letter)
-def produce_valid_letters(wordGroup, possibleLetters = initPossiblePuzzleLetters()):
+def produce_valid_letters(wordGroup, possibleLetters = None):
+  # used to be def produce_valid_letters(wordGroup, possibleLetters = initPossiblePuzzleLetters()):
+  # for some reason this caused problems running this function multiple times after reset.
+  # it seems to not happen when we initiatize inside this function call, for reasons I'm too much of a noob to understand
+  if possibleLetters == None:
+    possibleLetters = initPossiblePuzzleLetters()
   # print(wordGroup)
   # possibleLetters = initPossiblePuzzleLetters()
   for word, score in wordGroup.items():
