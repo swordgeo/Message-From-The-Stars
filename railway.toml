@@ -1,7 +1,7 @@
 [build]
 buildCommand = "pip install -r requirements.txt"
-startCommand = "python server.py"
-workdir = "/flask-server"
 
 [deploy]
+startCommand = "python server.py"
+workdir = "/flask-server"
 restartPolicyType = "ON_FAILURE"
