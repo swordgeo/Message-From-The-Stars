@@ -10,6 +10,10 @@ import UseGetSuggestions from './GetSuggestions';
 import ClueWordInputSet from './ClueWordInputSet';
 import AutoGrader from './AutoGrader';
 
+const commonLetters = ['A','E','I','L','N','O','R','S','T']
+const uncommonLetters = ['B','C','D','F','G','H','M','P','U','W','Y']
+const rareLetters = ['J','K','Q','V','X','Z']
+
 
 function App() {
   const [letters, setLetters] = useState(['', '', '', '', '', '']);
@@ -21,13 +25,39 @@ function App() {
   const suggestions = UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError);
 
 
-
-
   //something to check for duped input letters/words
   const hasDuplicates = (array) => {
     return new Set(array).size !== array.length;
   };
 
+
+  function breaksLetterPattern(letterArray) {
+    console.log(letterArray[0].toUpperCase());
+    // Rule 1: positions 0 and 3 must be common letters
+    if (!commonLetters.includes(letterArray[0].toUpperCase()) || 
+        !commonLetters.includes(letterArray[3].toUpperCase())) {
+        console.log("Positions 1 and 4 must be common (green) letters");
+        return true;
+    }
+    // Rule 2: positions 1, 2, and 4 must be uncommon OR rare
+    const restrictedPositions = [1, 2, 4];
+    for (let pos of restrictedPositions) {
+        if (!uncommonLetters.includes(letterArray[pos].toUpperCase()) && 
+            !rareLetters.includes(letterArray[pos].toUpperCase())) {
+            console.log(`Position ${pos + 1} must be uncommon (black) or rare (red) letters`);
+            return true;
+        }
+    }
+    // Rule 3: no more than one rare letter total
+    const rareCount = letterArray.filter(letter => 
+        rareLetters.includes(letter.toUpperCase())
+    ).length;
+    if (rareCount > 1) {
+        console.log("Cannot have more than one rare (red) letter");
+        return true;
+    }
+    return false; // Passes all letter rules
+  }
 
   // takes in letters and words from HTML, posts them to Flask function and then displays the suggestions
   function submitLetterWords() {
@@ -44,6 +74,11 @@ function App() {
 
     if (hasDuplicates(newWords)) {
       setError(new Error("All words must be distinct."));
+      return;
+    }
+
+    if (breaksLetterPattern(newLetters)) {
+      setError(new Error("Make sure you have exactly one common (green) trust and amplify letter, and no more than one rare (red) letter in your code."));
       return;
     }
 
