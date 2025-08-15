@@ -1,4 +1,5 @@
 [build]
+provider = "python"
 buildCommand = "pip install -r requirements.txt"
 workdir = "/flask-server"
 
