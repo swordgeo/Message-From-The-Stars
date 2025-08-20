@@ -99,60 +99,68 @@ function App() {
 
 
   return (
-      <div>
+      <div class="full-body">
         <header class="center">
           <h1>Message From The Stars Helper</h1>
           <p>This tool can help your team by suggesting useful words to your alien player or by ruling out impossible letters for your human player(s)</p>
         </header>
-        <div>
-        <LetterInputs 
-          letters={letters} 
-          onChange={(index, value) => {
-            const newLetters = letters.slice(0, 6); // Ensure we always have 6 elements
-            newLetters[index] = value;
-            setLetters(newLetters);
-          }}
-        />
+
+        <div class="alien-half">
+          <LetterInputs 
+            letters={letters} 
+            onChange={(index, value) => {
+              const newLetters = letters.slice(0, 6); // Ensure we always have 6 elements
+              newLetters[index] = value;
+              setLetters(newLetters);
+            }}
+          />
           <AlienWordInputs/>
           <p>When your six letters and three words are ready, hit the submit button to get your results!</p>
-          <button onClick={submitLetterWords}>Submit Letters and Words</button>
+          <button onClick={submitLetterWords}>Get Suggestions As Alien</button>
+
+          {isLoading && <div>Loading...</div>}
+          {error && <div>Error: {error.message}</div>}
 
           <AutoGrader letters={letters} />
 
-        {isLoading && <div>Loading...</div>}
-        {error && <div>Error: {error.message}</div>}
-        {suggestions && ( // Check if there are suggestions to display
-          <div>
-            {Object.keys(suggestions).map(word => ( // Iterate over each word in the suggestions object
-              <div key={word}>
-                <h3>{word}</h3>
-                <ul>
-                {Array.isArray(suggestions[word]) ? ( // Check if the value for the word is an array
-            suggestions[word].map((suggestion, index) => ( // Map over each suggestion for the current word
-              <li key={index}>
-                {suggestion.suggestion.split('').map((char, i) => ( //Split the suggestion string into individual characters and map over them
-                // Check if current character is in letters array
-                // If so, <b><u> that sucker so aliens can easily track their relevant letters
-                  letters.includes(char) ? 
-                  <b key={i}><u key={i}>{char}</u></b> : 
-                    <span key={i}>{char}</span>
-                ))}
-                {' '}(Grade: {suggestion.grade}, Density: {suggestion.density.toFixed(2)})
-              </li>
-            ))
-                  ) : (
-                    <li>No suggestions available</li>
-                  )}
-                </ul>
-              </div>
-            ))}
-          </div>
-        )}
+          <p>If one of your words comes back with no results, it could be that you have a typo, our APIs have no suggestions for you (rare but happens) or our APIs have merely timed out and you should try again in a few seconds.</p>
 
+          {suggestions && ( // If there are suggestions, we will display them
+            <div class="suggestions-list">
+              {Object.keys(suggestions).map(word => ( // Iterate over each word in the suggestions object
+                <div key={word}>
+                  <h3>{word}</h3>
+                  <ul>
 
-        <hr></hr>
+                    {Array.isArray(suggestions[word]) ? ( // Check if the value for the word is an array
+
+                      suggestions[word].map((suggestion, index) => ( // Map over each suggestion for the current word
+                        <li key={index}>
+                          {suggestion.suggestion.split('').map((char, i) => ( //Split the suggestion string into individual characters and map over them
+                            letters.includes(char) ? // Check if current character is in letters array (meaning it's a relevant letter)
+                            <b key={i}><u key={i}>{char}</u></b> : // If so, <b><u> that sucker for visual clarity
+                            <span key={i}>{char}</span> // If not, leave it be
+                          ))} {/* end of suggestion.suggestion.split */}
+                          {' '}(Grade: {suggestion.grade}, Density: {suggestion.density.toFixed(2)})
+                        </li>
+                      )) // end of suggestions[word].map
+                    ) : ( // end of suggestions if. Else we have nothing to display
+                      <li>No suggestions available</li>
+
+                    )}
+                  </ul>
+                </div> // end of suggestion section for one key word
+              ))} {/* end of Object.keys */}
+            </div> 
+          )} {/* end of suggestions */}
+          
+        </div> {/* end of .alien-half */}
+          <hr></hr>
+        <div class="human-half">
           <ClueWordInputSet />
-          <LetterGrid/>
+          {/* <LetterGrid/> */}
+        </div>
+
 
           <button class="btn btn-primary">BOOTSTRAP</button>
           
@@ -168,10 +176,11 @@ function App() {
           </div>
 
 
-        </div>
+        
+        
         
       </div>
-  )
+  ) // end of React return
 }
 
 export default App;

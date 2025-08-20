@@ -39,9 +39,6 @@ function LetterInputs ({ letters, onChange }) {
 
   return (
     <div className="input-container" class="container-fluid center">
-      <p>Make sure your letters are assigned correctly; 
-        this program will not ensure your letters are valid.</p>
-      <p>If one of your words comes back with no results, it could be that you have a typo, our APIs have no suggestions for you (rare but happens) or our APIs have merely timed out and you should try again in a few seconds.</p>
       <div class="row center">
         <div id="trust-letter-inputs" className="key-letter-grouping" class="col-auto">
           <p>Trust Letters</p>
