@@ -2,6 +2,7 @@
 import React, { useState, useEffect, Component } from "react";
 import './App.css';
 import './alien.css';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import LetterGrid from './LetterGrid';
 import LetterInputs from './LetterInputs';
@@ -9,6 +10,7 @@ import AlienWordInputs from './AlienWordInputs';
 import UseGetSuggestions from './GetSuggestions';
 import ClueWordInputSet from './ClueWordInputSet';
 import AutoGrader from './AutoGrader';
+
 
 const commonLetters = ['A','E','I','L','N','O','R','S','T']
 const uncommonLetters = ['B','C','D','F','G','H','M','P','U','W','Y']
@@ -24,6 +26,19 @@ function App() {
 
   const suggestions = UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError);
 
+  const [currentViewingPlayerMode, setCurrentViewingPlayerMode] = useState(null); // null, 'alien', or 'human'
+
+  const handleViewingPlayerModeChange = (mode) => {
+    setCurrentViewingPlayerMode(mode);
+    // Clear any errors when switching modes
+    setError(null);
+  };
+
+  const getCSSBodyClass = () => {
+    if (currentViewingPlayerMode === 'alien') return 'alien-mode';
+    if (currentViewingPlayerMode === 'human') return 'human-mode';
+    return 'landing-mode';
+  };
 
   //something to check for duped input letters/words
   const hasDuplicates = (array) => {
@@ -84,25 +99,50 @@ function App() {
 
     setLetters(newLetters);
     setWords(newWords);
-
     setIsLoading(true);
     setError(null);
-
-    // Reset fetchTrigger to false first to ensure re-trigger works
     setFetchTrigger(false);
-
-    // Ensure the state update happens properly
     setTimeout(() => {
-      setFetchTrigger(true); //trigger the fetch
+      setFetchTrigger(true);
     }, 0);
   }
 
 
   return (
-      <div class="full-body">
-        <header class="center">
-          <h1>Message From The Stars Helper</h1>
-          <p>This tool can help your team by suggesting useful words to your alien player or by ruling out impossible letters for your human player(s)</p>
+      <div className="full-body">
+        <header>
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <h1 className="text-center mb-4">Message From The Stars Helper</h1>
+                <p className="text-center">
+                  <a href="https://www.allplay.com/board-games/a-message-from-the-stars/">Message From The Stars</a> is a word game equal parts logic puzzle and deductive reasoning.<br/>
+                  This tool can help you play more effectively as the alien or human player.<br/>
+                  As the alien player, enter in your letter grid and key words and we'll suggest possible clues for you to give your humans.<br/>
+                  As the human player, enter in the words and grades that you have so far and we'll eliminate impossible letters so you don't have to second guess.
+                </p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-5">
+                <p className="text-right">Suggest Potential Clue Words</p>
+              </div>
+              <div className="col-2">
+                <p className="text-center">- or -</p>
+              </div>
+              <div className="col-5">
+                <p className="text-left">Rule Out the Impossible</p>
+              </div>
+            </div>
+            <div className="row">
+              <div className="col-6">
+                <button type="button" className="btn btn-md" aria-pressed="true">Play As Alien</button>
+              </div>
+              <div className="col-6">
+                <button type="button" className="btn btn-md" aria-pressed="true">Play As Human</button>
+              </div>
+            </div>
+          </div>
         </header>
 
         <div class="alien-half">
@@ -116,7 +156,7 @@ function App() {
           />
           <AlienWordInputs/>
           <p>When your six letters and three words are ready, hit the submit button to get your results!</p>
-          <button onClick={submitLetterWords}>Get Suggestions As Alien</button>
+          <button type="button" className="btn btn-primary btn-md" onClick={submitLetterWords}>Get Suggestions As Alien</button>
 
           {isLoading && <div>Loading...</div>}
           {error && <div>Error: {error.message}</div>}
