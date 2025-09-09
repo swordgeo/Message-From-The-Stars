@@ -1,6 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-function AutoGrader({ letters }) {
+function AutoGrader({ alienLetters }) {
   const [text, setText] = useState('');
 
   const handleInput = (event) => {
@@ -10,7 +10,7 @@ function AutoGrader({ letters }) {
   };
 
   function AutoGrade(currentText) {
-    const newLetters = letters.filter(letter => letter !== '');
+    const newLetters = alienLetters.filter(letter => letter !== '');
     // console.log(newLetters, currentText)
 
     let outputMessage = ''
@@ -25,15 +25,15 @@ function AutoGrader({ letters }) {
   } //end of AutoGrade()
 
 
-  function gradeWord(letters, word) {
+  function gradeWord(alienLetters, word) {
     if(!word) {
       return `Grade: 0`;
     }
   
     // Extract trust, amplify, and suspicion letters based on indices
-    const trustLetters = letters.slice(0, 3); // Indices 0, 1, 2
-    const amplifyLetters = letters.slice(3, 5); // Indices 3, 4
-    const suspicionLetter = letters[5]; // Index 5
+    const trustLetters = alienLetters.slice(0, 3); // Indices 0, 1, 2
+    const amplifyLetters = alienLetters.slice(3, 5); // Indices 3, 4
+    const suspicionLetter = alienLetters[5]; // Index 5
 
     let trustCount = 0;
     let amplifyCount = 0;
@@ -45,7 +45,7 @@ function AutoGrader({ letters }) {
         trustCount += 1
       } else if (amplifyLetters.includes(letter)) {
         amplifyCount += 1
-      } else if (letter == suspicionLetter) {
+      } else if (letter === suspicionLetter) {
         suspicionCount = 1 // count doesn't matter; only if it exists or not
       }
     }
@@ -62,10 +62,6 @@ function AutoGrader({ letters }) {
     return `Grade: ${grade}`;
   } //end of gradeWord()
 
-
-  useEffect(() => {
-    AutoGrade(text); // Run AutoGrade when letters change
-  }, [letters]);
 
   return (
     <div id="auto-grader">

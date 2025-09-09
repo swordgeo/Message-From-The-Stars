@@ -32,8 +32,8 @@ CORS(app)  # Apply CORS to all routes
 @app.route('/api/get-suggestions', methods=['POST'])
 def get_suggestions():
     try:
-      letters_str = request.form.get('letters', '')
-      words_str = request.form.get('words', '')
+      letters_str = request.form.get('alienLetters', '')
+      words_str = request.form.get('alienWords', '')
       print(letters_str)
       print(words_str)
     
@@ -68,10 +68,10 @@ def process_clues():
         # Assuming data is a list of dictionaries with 'word' and 'grade' keys
         processed_data = {}
         for item in word_data:
-            word = item.get('word', '').strip().upper()  # Remove spaces and convert to uppercase (original code uses uppercase)
+            word = item.get('humanWord', '').strip().upper()  # Remove spaces and convert to uppercase (original code uses uppercase)
             word = re.sub(r'[^A-Z]', '', word)  # Remove non-alphabetic characters
 
-            grade = item.get('grade', '0')  # Default to '0' if missing
+            grade = item.get('humanGrade', '0')  # Default to '0' if missing
             try:
               grade = int(grade) # Convert to integer
             except ValueError:

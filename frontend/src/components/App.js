@@ -1,10 +1,9 @@
-//import React, { useState, useEffect } from 'react';
-import React, { useState, useEffect, Component } from "react";
+// App.js
+import { useState } from "react";
 import './App.css';
 import './alien.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 
-import LetterGrid from './LetterGrid';
 import LetterInputs from './LetterInputs';
 import AlienWordInputs from './AlienWordInputs';
 import UseGetSuggestions from './GetSuggestions';
@@ -18,15 +17,19 @@ const rareLetters = ['J','K','Q','V','X','Z']
 
 
 function App() {
-  const [letters, setLetters] = useState(['', '', '', '', '', '']);
-  const [words, setWords] = useState([]);
+  const [alienLetters, setLetters] = useState(['', '', '', '', '', '']);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fetchTrigger, setFetchTrigger] = useState(false);
 
-  const suggestions = UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError);
 
   const [currentViewingPlayerMode, setCurrentViewingPlayerMode] = useState(null); // null, 'alien', or 'human'
+  const [alienWords, setAlienWords] = useState(['', '', '']);
+  const [humanWords, setHumanWords] = useState(Array(8).fill(''));
+  const [humanGrades, setHumanGrades] = useState(Array(8).fill(''));
+  const [humanLetterData, setHumanLetterData] = useState({ possible_letters: [], distinct_combinations: [] });
+
+  const suggestions = UseGetSuggestions(fetchTrigger, alienLetters, alienWords, setIsLoading, setError);
 
   const handleViewingPlayerModeChange = (mode) => {
     setCurrentViewingPlayerMode(mode);
@@ -44,6 +47,37 @@ function App() {
   const hasDuplicates = (array) => {
     return new Set(array).size !== array.length;
   };
+
+
+  // takes in letters and words from HTML, posts them to Flask function and then displays the suggestions
+  function submitAlienLettersAndWords() {
+    const lowercaseAlienLetters = alienLetters.map(letter => letter.toLowerCase());
+    const lowercaseAlienWords = alienWords.map(word => word.toLowerCase()).filter(word => word.trim() !== '');
+
+    if (hasDuplicates(lowercaseAlienLetters.filter(letter => letter !== ''))) {
+      setError(new Error("All six letters must be distinct."));
+      return;
+    }
+
+    if (hasDuplicates(lowercaseAlienWords)) {
+      setError(new Error("All words must be distinct."));
+      return;
+    }
+
+    if (breaksLetterPattern(lowercaseAlienLetters)) {
+      setError(new Error("Make sure you have exactly one common (green) trust and amplify letter, and no more than one rare (red) letter in your code."));
+      return;
+    }
+
+    // setLetters(lowercaseAlienLetters);
+    // setAlienWords(lowercaseAlienWords);
+    setIsLoading(true);
+    setError(null);
+    setFetchTrigger(false);
+    setTimeout(() => {
+      setFetchTrigger(true);
+    }, 0);
+  }
 
 
   function breaksLetterPattern(letterArray) {
@@ -74,42 +108,12 @@ function App() {
     return false; // Passes all letter rules
   }
 
-  // takes in letters and words from HTML, posts them to Flask function and then displays the suggestions
-  function submitLetterWords() {
-    const letterInputs = document.querySelectorAll('.alien-letter-input-box');
-    const newLetters = Array.from(letterInputs).map(input => input.value.toLowerCase());
-    
-    const wordsInputs = document.querySelectorAll('.word-input-box');
-    const newWords = Array.from(wordsInputs).map(input => input.value.toLowerCase());
-
-    if (hasDuplicates(newLetters)) {
-      setError(new Error("All six letters must be distinct."));
-      return;
-    }
-
-    if (hasDuplicates(newWords)) {
-      setError(new Error("All words must be distinct."));
-      return;
-    }
-
-    if (breaksLetterPattern(newLetters)) {
-      setError(new Error("Make sure you have exactly one common (green) trust and amplify letter, and no more than one rare (red) letter in your code."));
-      return;
-    }
-
-    setLetters(newLetters);
-    setWords(newWords);
-    setIsLoading(true);
-    setError(null);
-    setFetchTrigger(false);
-    setTimeout(() => {
-      setFetchTrigger(true);
-    }, 0);
-  }
-
 
   return (
-      <div className="full-body">
+      <div className={`full-body ${getCSSBodyClass()}`}>
+
+      {/* Landing Page - shown when no mode is selected */}
+      {!currentViewingPlayerMode && (
         <header>
           <div className="container-fluid">
             <div className="row">
@@ -123,104 +127,179 @@ function App() {
                 </p>
               </div>
             </div>
-            <div className="row">
+            <div className="row mt-5">
               <div className="col-5">
-                <p className="text-right">Suggest Potential Clue Words</p>
+                <p className="text-end">Suggest Potential Clue Words</p>
               </div>
               <div className="col-2">
                 <p className="text-center">- or -</p>
               </div>
               <div className="col-5">
-                <p className="text-left">Rule Out the Impossible</p>
+                <p className="text-start">Rule Out the Impossible</p>
               </div>
             </div>
-            <div className="row">
+            <div className="row mt-3">
               <div className="col-6">
-                <button type="button" className="btn btn-md" aria-pressed="true">Play As Alien</button>
+                <div className="d-grid">
+                  <button 
+                    type="button" 
+                    className="btn btn-alien btn-lg" 
+                    onClick={() => handleViewingPlayerModeChange('alien')}
+                  >
+                    Play As Alien
+                  </button>
+                </div>
               </div>
               <div className="col-6">
-                <button type="button" className="btn btn-md" aria-pressed="true">Play As Human</button>
+                <div className="d-grid">
+                  <button 
+                    type="button" 
+                    className="btn btn-human btn-lg" 
+                    onClick={() => handleViewingPlayerModeChange('human')}
+                  >
+                    Play As Human
+                  </button>
+                </div>
               </div>
+            </div>
+            <hr/>
+            <div className="strategy">
+              <p>To play super strategically, you may choose to the other side of this program during play for additional information.</p>
+              <p>As an alien player, you might migrate to the human side to figure out what the information you've given has proved or disproved so far (and what areas need more attention).</p>
+              <p>As a human player, you might migrate to the alien side with your favorite currently legal combination and your own keywords for suggested that can prove or disprove your hunch</p>
             </div>
           </div>
         </header>
-
-        <div class="alien-half">
-          <LetterInputs 
-            letters={letters} 
-            onChange={(index, value) => {
-              const newLetters = letters.slice(0, 6); // Ensure we always have 6 elements
-              newLetters[index] = value;
-              setLetters(newLetters);
-            }}
-          />
-          <AlienWordInputs/>
-          <p>When your six letters and three words are ready, hit the submit button to get your results!</p>
-          <button type="button" className="btn btn-primary btn-md" onClick={submitLetterWords}>Get Suggestions As Alien</button>
-
-          {isLoading && <div>Loading...</div>}
-          {error && <div>Error: {error.message}</div>}
-
-          <AutoGrader letters={letters} />
-
-          <p>If one of your words comes back with no results, it could be that you have a typo, our APIs have no suggestions for you (rare but happens) or our APIs have merely timed out and you should try again in a few seconds.</p>
-
-          {suggestions && ( // If there are suggestions, we will display them
-            <div class="suggestions-list">
-              {Object.keys(suggestions).map(word => ( // Iterate over each word in the suggestions object
-                <div key={word}>
-                  <h3>{word}</h3>
-                  <ul>
-
-                    {Array.isArray(suggestions[word]) ? ( // Check if the value for the word is an array
-
-                      suggestions[word].map((suggestion, index) => ( // Map over each suggestion for the current word
-                        <li key={index}>
-                          {suggestion.suggestion.split('').map((char, i) => ( //Split the suggestion string into individual characters and map over them
-                            letters.includes(char) ? // Check if current character is in letters array (meaning it's a relevant letter)
-                            <b key={i}><u key={i}>{char}</u></b> : // If so, <b><u> that sucker for visual clarity
-                            <span key={i}>{char}</span> // If not, leave it be
-                          ))} {/* end of suggestion.suggestion.split */}
-                          {' '}(Grade: {suggestion.grade}, Density: {suggestion.density.toFixed(2)})
-                        </li>
-                      )) // end of suggestions[word].map
-                    ) : ( // end of suggestions if. Else we have nothing to display
-                      <li>No suggestions available</li>
-
-                    )}
-                  </ul>
-                </div> // end of suggestion section for one key word
-              ))} {/* end of Object.keys */}
-            </div> 
-          )} {/* end of suggestions */}
-          
-        </div> {/* end of .alien-half */}
-          <hr></hr>
-        <div class="human-half">
-          <ClueWordInputSet />
-          {/* <LetterGrid/> */}
-        </div>
+      )} {/* Landing page - null mode */}
 
 
-          <button class="btn btn-primary">BOOTSTRAP</button>
-          
-          <div class="dropdown">
-            <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-              Dropdown button
-            </button>
-            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-              <a class="dropdown-item" href="#">Action</a>
-              <a class="dropdown-item" href="#">Another action</a>
-              <a class="dropdown-item" href="#">Something else here</a>
-            </div> 
+      {/* Mode selector (shown when a mode is active) */}
+      {currentViewingPlayerMode && (
+        <nav className="navbar navbar-expand-lg">
+          <div className="container-fluid">
+            <span className="navbar-brand">Message From The Stars Helper</span>
+            <div className="navbar-nav ms-auto">
+              <button 
+                className={`btn me-2 ${currentViewingPlayerMode === 'alien' ? 'btn-alien' : 'btn-secondary'}`}
+                onClick={() => handleViewingPlayerModeChange('alien')}
+              >
+                Alien Mode
+              </button>
+              <button 
+                className={`btn me-2 ${currentViewingPlayerMode === 'human' ? 'btn-human' : 'btn-secondary'}`}
+                onClick={() => handleViewingPlayerModeChange('human')}
+              >
+                Human Mode
+              </button>
+              <button 
+                className="btn me-2 btn-dark"
+                onClick={() => handleViewingPlayerModeChange(null)}
+              >
+                Home
+              </button>
+            </div>
           </div>
+        </nav>
+      )} {/* Mode selector*/}
 
 
-        
-        
-        
-      </div>
-  ) // end of React return
+      {/* Alien Section - hidden/shown based on mode */}
+      {currentViewingPlayerMode === 'alien' && (
+        <div className="alien-half">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <div className="card">
+                  <div className="card-body">
+                    <h2 className="card-title text-center">Alien Player Tools</h2>
+                    
+                    <LetterInputs 
+                      alienLetters={alienLetters} 
+                      onChange={(index, value) => {
+                        const lowercaseAlienLetters = alienLetters.slice(0, 6);
+                        lowercaseAlienLetters[index] = value;
+                        setLetters(lowercaseAlienLetters);
+                      }}
+                    />
+                    
+                    <AlienWordInputs
+                      alienWords={alienWords}
+                      onChange={setAlienWords}
+                    />
+                    
+                    <div className="text-center mt-4">
+                      <p>When your six letters and three words are ready, hit the submit button to get your results!</p>
+                      <button className="btn btn-alien btn-lg" onClick={submitAlienLettersAndWords}>
+                        Get Suggestions As Alien
+                      </button>
+                    </div>
+
+                    {isLoading && <div className="alert alert-info mt-3">Loading...</div>}
+                    {error && <div className="alert alert-danger mt-3">Error: {error.message}</div>}
+
+                    <AutoGrader alienLetters={alienLetters} />
+
+                    {suggestions && (
+                      <div className="suggestions-list mt-4">
+                        {Object.keys(suggestions).map(word => (
+                          <div key={word} className="mb-3">
+                            <h3>{word}</h3>
+                            <ul className="list-group">
+                              {Array.isArray(suggestions[word]) ? (
+                                suggestions[word].map((suggestion, index) => (
+                                  <li key={index} className="list-group-item">
+                                    {suggestion.suggestion.split('').map((char, i) => (
+                                      alienLetters.includes(char) ? 
+                                      <b key={i}><u>{char}</u></b> : 
+                                      <span key={i}>{char}</span>
+                                    ))} 
+                                    {' '}(Grade: {suggestion.grade}, Density: {suggestion.density.toFixed(2)})
+                                  </li>
+                                ))
+                              ) : (
+                                <li className="list-group-item">No suggestions available</li>
+                              )}
+                            </ul>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+
+      {/* Human Section - hidden/shown based on mode */}
+      {currentViewingPlayerMode === 'human' && (
+        <div className="human-half">
+          <div className="container-fluid">
+            <div className="row">
+              <div className="col-12">
+                <div className="card">
+                  <div className="card-body">
+                    <h2 className="card-title text-center">Human Player Tools</h2>
+                    <ClueWordInputSet 
+                      humanWords={humanWords}
+                      humanGrades={humanGrades}
+                      letterData={humanLetterData}
+                      onWordsChange={setHumanWords}
+                      onGradesChange={setHumanGrades}
+                      onLetterDataChange={setHumanLetterData}
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
 }
+        
 
 export default App;

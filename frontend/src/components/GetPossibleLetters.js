@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react';
+// GetPossibleLetters.js
 
-function UseGetPossibleLetters(words = [], grades = [], setIsLoading, setError) {
-  const [data, setData] = useState(null);
+import { useEffect } from 'react';
+
+function UseGetPossibleLetters(humanWords = [], humanGrades = [], letterData, onLetterDataChange, setIsLoading, setError, fetchTrigger) {
   const API_URL = process.env.REACT_APP_API_URL;
 
   useEffect(() => {
-    if (words.length === 0 || grades.length === 0) return;
+    if (!fetchTrigger || humanWords.length === 0 || humanGrades.length === 0) return;
 
     let storedPossibleLetters = null;
     try {
@@ -18,10 +19,10 @@ function UseGetPossibleLetters(words = [], grades = [], setIsLoading, setError) 
     }
 
     // Combine words and grades into a single list of objects
-    const combinedData = words.map((word, index) => ({
-      word,
-      grade: grades[index]
-    })).filter(item => item.word); // Filter out items where word is null or empty
+    const combinedData = humanWords.map((humanWord, index) => ({
+      humanWord,
+      humanGrade: humanGrades[index]
+    })).filter(item => item.humanWord); // Filter out items where word is null or empty
 
     const requestData = {
       wordsData: combinedData,
@@ -43,7 +44,7 @@ function UseGetPossibleLetters(words = [], grades = [], setIsLoading, setError) 
     .then(response => response.json())
     .then(data => {
       console.log("Fetched data:", data); // Log the fetched data
-      setData(data); // Ensure we are setting the correct part of the response
+      onLetterDataChange(data); // Ensure we are setting the correct part of the response
       setIsLoading(false);
     })
     .catch(error => {
@@ -51,9 +52,9 @@ function UseGetPossibleLetters(words = [], grades = [], setIsLoading, setError) 
       setError(error);
       setIsLoading(false);
     });
-  }, [words, grades, API_URL, setIsLoading, setError]);
+  }, [fetchTrigger, API_URL, setIsLoading, setError]);
 
-  return data || { possible_letters: [], distinct_combinations: [] };
+  return letterData || { possible_letters: [], distinct_combinations: [] };
 }
 
 export default UseGetPossibleLetters;

@@ -1,19 +1,19 @@
 import { useState, useEffect } from 'react';
 
 
-function UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError) {
+function UseGetSuggestions(fetchTrigger, alienLetters, alienWords, setIsLoading, setError) {
     const [data, setData] = useState(null);
     const API_URL = process.env.REACT_APP_API_URL;
 
     // Return the promise from fetch
     useEffect(() => {
-      if (!fetchTrigger || letters.length === 0 || words.length === 0) return;
+      if (!fetchTrigger || alienLetters.length === 0 || alienWords.length === 0) return;
 
       setIsLoading(true);
       setError(null);
 
-      const encodedLetters = letters.join(',');
-      const encodedWords = words.join(',');
+      const encodedLetters = alienLetters.join(',');
+      const encodedWords = alienWords.join(',');
       console.log("Beginning fetch")
 
       fetch(`${API_URL}/get-suggestions`, {
@@ -21,7 +21,7 @@ function UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError)
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
         },
-        body: `letters=${encodeURIComponent(encodedLetters)}&words=${encodeURIComponent(encodedWords)}`
+        body: `alienLetters=${encodeURIComponent(encodedLetters)}&alienWords=${encodeURIComponent(encodedWords)}`
     })
     .then(response => response.json())
     .then(data => {
@@ -35,7 +35,6 @@ function UseGetSuggestions(fetchTrigger, letters, words, setIsLoading, setError)
     .finally(() => {
       setIsLoading(false);
     });
-  // }, [letters, words, API_URL, setIsLoading, setError]);
   }, [fetchTrigger]); // Only run when fetchTrigger changes
 
 

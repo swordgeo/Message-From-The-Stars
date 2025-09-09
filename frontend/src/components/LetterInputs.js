@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+// LetterInputs.js
 
-
-function LetterInputs ({ letters, onChange }) {
+function LetterInputs ({ alienLetters, onChange }) {
   // const [trustLetter1, setTrustLetter1] = useState('');
   // const [trustLetter2, setTrustLetter2] = useState('');
   // const [trustLetter3, setTrustLetter3] = useState('');
@@ -43,7 +42,7 @@ function LetterInputs ({ letters, onChange }) {
         <div id="trust-letter-inputs" className="key-letter-grouping" class="col-auto">
           <p>Trust Letters</p>
           <input
-            value={letters[0] || ''}
+            value={alienLetters[0] || ''}
             onChange={(e) => handleChange(e, null, 'box2', 0)}
             onKeyDown={(e) => handleKeyDown(e, null, null)}
             type="text"
@@ -52,7 +51,7 @@ function LetterInputs ({ letters, onChange }) {
             id="box1"
           />
           <input
-            value={letters[1] || ''}
+            value={alienLetters[1] || ''}
             onChange={(e) => handleChange(e, null, 'box3', 1)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box1')}
             type="text"
@@ -61,7 +60,7 @@ function LetterInputs ({ letters, onChange }) {
             id="box2"
           />
           <input
-            value={letters[2] || ''}
+            value={alienLetters[2] || ''}
             onChange={(e) => handleChange(e, null, 'box4', 2)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box2')}
             type="text"
@@ -73,7 +72,7 @@ function LetterInputs ({ letters, onChange }) {
         <div id="amplify-letter-inputs" className="key-letter-grouping" class="col-auto">
           <p>Amplify Letters</p>
           <input
-            value={letters[3] || ''}
+            value={alienLetters[3] || ''}
             onChange={(e) => handleChange(e, null, 'box5', 3)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box3')}
             type="text"
@@ -82,7 +81,7 @@ function LetterInputs ({ letters, onChange }) {
             id="box4"
           />
           <input
-            value={letters[4] || ''}
+            value={alienLetters[4] || ''}
             onChange={(e) => handleChange(e, null, 'box6', 4)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box4')}
             type="text"
@@ -94,7 +93,7 @@ function LetterInputs ({ letters, onChange }) {
         <div id="suspicion-letter-inputs" className="key-letter-grouping" class="col-auto">
           <p>Suspicion Letter</p>
           <input
-            value={letters[5] || ''}
+            value={alienLetters[5] || ''}
             onChange={(e) => handleChange(e, null, null, 5)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box5')}
             type="text"
