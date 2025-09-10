@@ -32,70 +32,105 @@ function LetterInputs ({ alienLetters, onChange }) {
   };
 
   return (
-    <div className="input-container" class="container-fluid center">
+    <div className="input-container container-fluid center">
       <div class="row center">
-        <div id="trust-letter-inputs" className="key-letter-grouping" class="col-auto">
+        <div id="trust-letter-inputs" className="key-letter-grouping col-auto">
           <p>Trust Letters</p>
-          <input
-            value={alienLetters[0] || ''}
-            onChange={(e) => handleChange(e, null, 'box2', 0)}
-            onKeyDown={(e) => handleKeyDown(e, null, null)}
-            type="text"
-            maxLength="1"
-            className="alien-letter-input-box" 
-            id="box1"
-          />
-          <input
+          <div className="d-inline-flex flex-column align-items-center mx-2">
+            <input
+              value={alienLetters[0] || ''}
+              onChange={(e) => handleChange(e, null, 'box2', 0)}
+              onKeyDown={(e) => handleKeyDown(e, null, null)}
+              type="text"
+              maxLength="1"
+              className="alien-letter-input-box" 
+              id="box1"
+            />
+            <div className="letter-bars">
+              <div className="bar bg-success"></div>
+            </div>
+          </div>
+          <div className="d-inline-flex flex-column align-items-center mx-2">
+            <input
             value={alienLetters[1] || ''}
             onChange={(e) => handleChange(e, null, 'box3', 1)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box1')}
-            type="text"
-            maxLength="1"
-            className="alien-letter-input-box"
-            id="box2"
-          />
-          <input
+              type="text"
+              maxLength="1"
+              className="alien-letter-input-box" 
+              id="box2"
+            />
+            <div className="letter-bars">
+              <div className="bar bg-dark"></div>
+              <div className="bar bg-danger"></div>
+            </div>
+          </div>
+          <div className="d-inline-flex flex-column align-items-center mx-2">
+            <input
             value={alienLetters[2] || ''}
             onChange={(e) => handleChange(e, null, 'box4', 2)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box2')}
-            type="text"
-            maxLength="1"
-            className="alien-letter-input-box"
-            id="box3"
-          />
+              type="text"
+              maxLength="1"
+              className="alien-letter-input-box" 
+              id="box3"
+            />
+            <div className="letter-bars">
+              <div className="bar bg-dark"></div>
+              <div className="bar bg-danger"></div>
+            </div>
+          </div>
         </div> {/* trust-letter-inputs */}
-        <div id="amplify-letter-inputs" className="key-letter-grouping" class="col-auto">
+        <div id="amplify-letter-inputs" className="key-letter-grouping col-auto">
           <p>Amplify Letters</p>
-          <input
+          <div className="d-inline-flex flex-column align-items-center mx-2">
+            <input
             value={alienLetters[3] || ''}
             onChange={(e) => handleChange(e, null, 'box5', 3)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box3')}
-            type="text"
-            maxLength="1"
-            className="alien-letter-input-box"
-            id="box4"
-          />
-          <input
+              type="text"
+              maxLength="1"
+              className="alien-letter-input-box" 
+              id="box4"
+            />
+            <div className="letter-bars">
+              <div className="bar bg-success"></div>
+            </div>
+          </div>
+          <div className="d-inline-flex flex-column align-items-center mx-2">
+            <input
             value={alienLetters[4] || ''}
             onChange={(e) => handleChange(e, null, 'box6', 4)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box4')}
-            type="text"
-            maxLength="1"
-            className="alien-letter-input-box"
-            id="box5"
-          />
+              type="text"
+              maxLength="1"
+              className="alien-letter-input-box" 
+              id="box5"
+            />
+            <div className="letter-bars">
+              <div className="bar bg-success"></div>
+              <div className="bar bg-dark"></div>
+              <div className="bar bg-danger"></div>
+            </div>
+          </div>
         </div> {/* amplify-letter-inputs */}
-        <div id="suspicion-letter-inputs" className="key-letter-grouping" class="col-auto">
+        <div id="suspicion-letter-inputs" className="key-letter-grouping col-auto">
           <p>Suspicion Letter</p>
-          <input
+          <div className="d-inline-flex flex-column align-items-center mx-2">
+            <input
             value={alienLetters[5] || ''}
             onChange={(e) => handleChange(e, null, null, 5)}
             onKeyDown={(e) => handleKeyDown(e, null, 'box5')}
-            type="text"
-            maxLength="1"
-            className="alien-letter-input-box"
-            id="box6"
-          />
+              type="text"
+              maxLength="1"
+              className="alien-letter-input-box" 
+              id="box6"
+            />
+            <div className="letter-bars">
+              <div className="bar bg-dark"></div>
+              <div className="bar bg-danger"></div>
+            </div>
+          </div>
         </div> {/* suspicion-letter-inputs */}
         
       </div> {/* row center */}
