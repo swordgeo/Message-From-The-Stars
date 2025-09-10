@@ -65,7 +65,6 @@ function App() {
     }
 
     if (breaksLetterPattern(lowercaseAlienLetters)) {
-      setError(new Error("Make sure you have exactly one common (green) trust and amplify letter, and no more than one rare (red) letter in your code."));
       return;
     }
 
@@ -85,7 +84,7 @@ function App() {
     // Rule 1: positions 0 and 3 must be common letters
     if (!commonLetters.includes(letterArray[0].toUpperCase()) || 
         !commonLetters.includes(letterArray[3].toUpperCase())) {
-        console.log("Positions 1 and 4 must be common (green) letters");
+        setError(new Error("Positions 1 and 4 must be common (green) letters"));
         return true;
     }
     // Rule 2: positions 1, 2, and 4 must be uncommon OR rare
@@ -93,7 +92,7 @@ function App() {
     for (let pos of restrictedPositions) {
         if (!uncommonLetters.includes(letterArray[pos].toUpperCase()) && 
             !rareLetters.includes(letterArray[pos].toUpperCase())) {
-            console.log(`Position ${pos + 1} must be uncommon (black) or rare (red) letters`);
+            setError(new Error(`Position ${pos + 1} must be an uncommon (black) or rare (red) letter`));
             return true;
         }
     }
@@ -102,7 +101,7 @@ function App() {
         rareLetters.includes(letter.toUpperCase())
     ).length;
     if (rareCount > 1) {
-        console.log("Cannot have more than one rare (red) letter");
+        setError(new Error("Cannot have more than one rare (red) letter"));
         return true;
     }
     return false; // Passes all letter rules

@@ -1,12 +1,7 @@
 // LetterInputs.js
 
 function LetterInputs ({ alienLetters, onChange }) {
-  // const [trustLetter1, setTrustLetter1] = useState('');
-  // const [trustLetter2, setTrustLetter2] = useState('');
-  // const [trustLetter3, setTrustLetter3] = useState('');
-  // const [amplifyLetter1, setAmplifyLetter1] = useState('');
-  // const [amplifyLetter2, setAmplifyLetter2] = useState('');
-  // const [suspicionLetter1, setSuspicionLetter1] = useState('');
+
 
   // filter out non-letter characters
   const handleKeyDown = (event, setLetter, prevInputId) => {
