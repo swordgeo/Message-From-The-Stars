@@ -8,8 +8,6 @@ import re
 import sys
 import traceback
 
-# file imports
-# file imports
 try:
     from logic.alien import produce_suggestions
     from logic.human import produce_valid_letters
