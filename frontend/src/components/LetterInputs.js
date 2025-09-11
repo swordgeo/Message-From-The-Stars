@@ -36,7 +36,7 @@ function LetterInputs ({ alienLetters, onChange }) {
       <div class="row center">
         <div id="trust-letter-inputs" className="key-letter-grouping col-auto">
           <p>Trust Letters</p>
-          <div className="d-inline-flex flex-column align-items-center mx-2">
+          <div className="d-inline-flex flex-column align-items-center mx-1">
             <input
               value={alienLetters[0] || ''}
               onChange={(e) => handleChange(e, null, 'box2', 0)}
@@ -50,7 +50,7 @@ function LetterInputs ({ alienLetters, onChange }) {
               <div className="bar bg-success"></div>
             </div>
           </div>
-          <div className="d-inline-flex flex-column align-items-center mx-2">
+          <div className="d-inline-flex flex-column align-items-center mx-1">
             <input
             value={alienLetters[1] || ''}
             onChange={(e) => handleChange(e, null, 'box3', 1)}
@@ -65,7 +65,7 @@ function LetterInputs ({ alienLetters, onChange }) {
               <div className="bar bg-danger"></div>
             </div>
           </div>
-          <div className="d-inline-flex flex-column align-items-center mx-2">
+          <div className="d-inline-flex flex-column align-items-center mx-1">
             <input
             value={alienLetters[2] || ''}
             onChange={(e) => handleChange(e, null, 'box4', 2)}
@@ -83,7 +83,7 @@ function LetterInputs ({ alienLetters, onChange }) {
         </div> {/* trust-letter-inputs */}
         <div id="amplify-letter-inputs" className="key-letter-grouping col-auto">
           <p>Amplify Letters</p>
-          <div className="d-inline-flex flex-column align-items-center mx-2">
+          <div className="d-inline-flex flex-column align-items-center mx-1">
             <input
             value={alienLetters[3] || ''}
             onChange={(e) => handleChange(e, null, 'box5', 3)}
@@ -97,7 +97,7 @@ function LetterInputs ({ alienLetters, onChange }) {
               <div className="bar bg-success"></div>
             </div>
           </div>
-          <div className="d-inline-flex flex-column align-items-center mx-2">
+          <div className="d-inline-flex flex-column align-items-center mx-1">
             <input
             value={alienLetters[4] || ''}
             onChange={(e) => handleChange(e, null, 'box6', 4)}
@@ -108,7 +108,6 @@ function LetterInputs ({ alienLetters, onChange }) {
               id="box5"
             />
             <div className="letter-bars">
-              <div className="bar bg-success"></div>
               <div className="bar bg-dark"></div>
               <div className="bar bg-danger"></div>
             </div>
@@ -127,6 +126,7 @@ function LetterInputs ({ alienLetters, onChange }) {
               id="box6"
             />
             <div className="letter-bars">
+              <div className="bar bg-success"></div>
               <div className="bar bg-dark"></div>
               <div className="bar bg-danger"></div>
             </div>

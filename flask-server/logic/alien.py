@@ -82,10 +82,10 @@ def get_chatgpt_suggestions(word):
     ]
   )
 
-  gpt_words_str = completion.choices[0].message.content
-  words = gpt_words_str.split(',')
-  print(words)
-  return words
+  comma_separated_suggestions = completion.choices[0].message.content
+  gpt_suggestions = comma_separated_suggestions.split(',')
+  print(gpt_suggestions)
+  return gpt_suggestions
 
 
 def get_letters():
@@ -251,7 +251,7 @@ def produce_suggestions(letters_str, words_str):
 
 
 def process_letters(letters_str):
-    letters_str=letters_str.replace(",","")
+    letters_str=letters_str.replace(",","").lower()
     print(f"after trim {letters_str}")
     # Confirm the input string length is exactly 6 characters
     if len(letters_str) != 6:
@@ -270,24 +270,20 @@ def process_letters(letters_str):
     return trust_letters, amplify_letters, suspicion_letter
 
 
-def process_words(words_str):
-    collected_words = []  # List to store the successfully collected words
-    words = words_str.split(',')
+def process_words(comma_separated_provided_words):
+    collected_suggestions = []  # List to store the successfully collected words
+    provided_word_array = [word.lower() for word in comma_separated_provided_words.split(',')]
 
-    for word in words:
-        # Two separate API calls
+    for word in provided_word_array:
         chatgpt_suggestions = get_chatgpt_suggestions(word)
+        chatgpt_suggestions = [item.lower().strip() for item in chatgpt_suggestions]
         # synonym_suggestions = get_synonyms(word) # we might keep this one out - it's suggestions are just bad
         association_suggestions = get_word_associations(word)
-        # If successful, add the word to the collected_words list
-        # collected_words.append((word, word_associations+word_synonyms))
-        
-        collected_words.append((word, chatgpt_suggestions + association_suggestions))
-        # Optionally, print the associations to confirm success
-        # print(f"Associations for '{word}': {word_associations}")
-            
+        association_suggestions = [item.lower().strip() for item in association_suggestions]
+
+        collected_suggestions.append((word, chatgpt_suggestions + association_suggestions))   
     # print(collected_words)
-    return collected_words
+    return collected_suggestions
 
 if __name__ == '__main__':
     print(produce_suggestions("p,e,x,i,y,r", "robes"))
