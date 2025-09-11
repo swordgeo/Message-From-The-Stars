@@ -14,7 +14,7 @@ function ClueWordInputSet({ humanWords, humanGrades, letterData, onWordsChange, 
 
   const handleWordChange = (index, newValue) => {
     const newWords = [...humanWords];
-    newWords[index] = newValue;
+    newWords[index] = newValue.toLowerCase();
     onWordsChange(newWords);
   };
 

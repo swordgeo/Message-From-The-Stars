@@ -68,8 +68,6 @@ function App() {
       return;
     }
 
-    // setLetters(lowercaseAlienLetters);
-    // setAlienWords(lowercaseAlienWords);
     setIsLoading(true);
     setError(null);
     setFetchTrigger(false);
@@ -80,7 +78,6 @@ function App() {
 
 
   function breaksLetterPattern(letterArray) {
-    console.log(letterArray[0].toUpperCase());
     // Rule 1: positions 0 and 3 must be common letters
     if (!commonLetters.includes(letterArray[0].toUpperCase()) || 
         !commonLetters.includes(letterArray[3].toUpperCase())) {
@@ -248,10 +245,10 @@ function App() {
                                 suggestions[word].map((suggestion, index) => (
                                   <li key={index} className="list-group-item">
                                     {suggestion.suggestion.split('').map((char, i) => (
-                                      alienLetters.includes(char) ? 
-                                      <b key={i}><u>{char}</u></b> : 
-                                      <span key={i}>{char}</span>
-                                    ))} 
+                                      alienLetters.some(letter => letter.toLowerCase() === char.toLowerCase()) ? 
+                                        <b key={i}><u>{char}</u></b> : 
+                                        <span key={i}>{char}</span>
+                                    ))}
                                     {' '}(Grade: {suggestion.grade}, Density: {suggestion.density.toFixed(2)})
                                   </li>
                                 ))

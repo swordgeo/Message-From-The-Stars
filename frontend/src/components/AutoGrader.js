@@ -29,24 +29,24 @@ function AutoGrader({ alienLetters }) {
     if(!word) {
       return `Grade: 0`;
     }
-  
-    // Extract trust, amplify, and suspicion letters based on indices
-    const trustLetters = alienLetters.slice(0, 3); // Indices 0, 1, 2
-    const amplifyLetters = alienLetters.slice(3, 5); // Indices 3, 4
-    const suspicionLetter = alienLetters[5]; // Index 5
+
+  const normalizedWord = word.toLowerCase();
+  const trustLetters = alienLetters.slice(0, 3).map(l => l.toLowerCase());
+  const amplifyLetters = alienLetters.slice(3, 5).map(l => l.toLowerCase());
+  const suspicionLetter = alienLetters[5]?.toLowerCase();
 
     let trustCount = 0;
     let amplifyCount = 0;
     let suspicionCount = 0;
-
-    for (let i = 0; i < word.length; i++) {
-      const letter = word[i];
+  
+    for (let i = 0; i < normalizedWord.length; i++) {
+      const letter = normalizedWord[i];
       if (trustLetters.includes(letter)) {
         trustCount += 1
       } else if (amplifyLetters.includes(letter)) {
         amplifyCount += 1
       } else if (letter === suspicionLetter) {
-        suspicionCount = 1 // count doesn't matter; only if it exists or not
+        suspicionCount = 1 // multiple instances not relevant
       }
     }
 

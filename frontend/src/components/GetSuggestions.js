@@ -12,8 +12,11 @@ function UseGetSuggestions(fetchTrigger, alienLetters, alienWords, setIsLoading,
       setIsLoading(true);
       setError(null);
 
-      const encodedLetters = alienLetters.join(',');
-      const encodedWords = alienWords.join(',');
+      const normalizedLetters = alienLetters.map(l => l.toLowerCase());
+      const normalizedWords = alienWords.map(w => w.toLowerCase());
+
+      const encodedLetters = normalizedLetters.join(',');
+      const encodedWords = normalizedWords.join(',');
       console.log("Beginning fetch")
 
       fetch(`${API_URL}/get-suggestions`, {
