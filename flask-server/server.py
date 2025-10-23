@@ -1,6 +1,8 @@
 from flask import Flask, request, jsonify
 from dotenv import load_dotenv
 from flask_cors import CORS
+from flask_limiter import Limiter
+from flask_limiter.util import get_remote_address
 
 # python imports
 import os
@@ -21,13 +23,23 @@ except Exception as e:
         print(f"Logic directory contents: {os.listdir('logic')}")
     traceback.print_exc()
 
+limiter = Limiter(
+    key_func=get_remote_address,
+    default_limits=["100 per hour"],  # Safety net for all routes
+    storage_uri="memory://"
+)
+
 load_dotenv()
 # app = Flask(__name__, template_folder="../src", static_folder="../frontend/src/index.js")
 app = Flask(__name__)
 CORS(app)  # Apply CORS to all routes
+limiter.init_app(app)
+
+
 
 
 @app.route('/api/get-suggestions', methods=['POST'])
+@limiter.limit("5 per minute")  # Only 5 requests per minute per IP
 def get_suggestions():
     try:
       letters_str = request.form.get('alienLetters', '')
@@ -46,6 +58,7 @@ def get_suggestions():
     
 
 @app.route('/api/process-clues', methods=['POST'])
+@limiter.limit("5 per minute")  # Only 5 requests per minute per IP
 def process_clues():
     try:
         # Retrieve JSON data from the request

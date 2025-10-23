@@ -21,6 +21,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [fetchTrigger, setFetchTrigger] = useState(false);
+  const [lastSubmitTime, setLastSubmitTime] = useState(0);
 
 
   const [currentViewingPlayerMode, setCurrentViewingPlayerMode] = useState(null); // null, 'alien', or 'human'
@@ -30,6 +31,7 @@ function App() {
   const [humanLetterData, setHumanLetterData] = useState({ possible_letters: [], distinct_combinations: [] });
 
   const suggestions = UseGetSuggestions(fetchTrigger, alienLetters, alienWords, setIsLoading, setError);
+  const COOLDOWN_MS = 5000; // 5 seconds
 
   const handleViewingPlayerModeChange = (mode) => {
     setCurrentViewingPlayerMode(mode);
@@ -51,6 +53,14 @@ function App() {
 
   // takes in letters and words from HTML, posts them to Flask function and then displays the suggestions
   function submitAlienLettersAndWords() {
+    
+    const now = Date.now();
+    if (now - lastSubmitTime < COOLDOWN_MS) {
+      setError(new Error(`Please wait ${Math.ceil((COOLDOWN_MS - (now - lastSubmitTime)) / 1000)} seconds`));
+      return;
+    }
+    setLastSubmitTime(now);
+
     const lowercaseAlienLetters = alienLetters.map(letter => letter.toLowerCase());
     const lowercaseAlienWords = alienWords.map(word => word.toLowerCase()).filter(word => word.trim() !== '');
 
