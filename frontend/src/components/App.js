@@ -91,7 +91,7 @@ function App() {
     // Rule 1: positions 0 and 3 must be common letters
     if (!commonLetters.includes(letterArray[0].toUpperCase()) || 
         !commonLetters.includes(letterArray[3].toUpperCase())) {
-        setError(new Error("Positions 1 and 4 must be common (green) letters"));
+        setError(new Error(`Positions 1 and 4 must be common/green letters (${commonLetters})`));
         return true;
     }
     // Rule 2: positions 1, 2, and 4 must be uncommon OR rare
@@ -99,7 +99,7 @@ function App() {
     for (let pos of restrictedPositions) {
         if (!uncommonLetters.includes(letterArray[pos].toUpperCase()) && 
             !rareLetters.includes(letterArray[pos].toUpperCase())) {
-            setError(new Error(`Position ${pos + 1} must be an uncommon (black) or rare (red) letter`));
+            setError(new Error(`Position ${pos + 1} must be an uncommon/black (${uncommonLetters}) or rare/red letter (${rareLetters})`));
             return true;
         }
     }
@@ -108,7 +108,7 @@ function App() {
         rareLetters.includes(letter.toUpperCase())
     ).length;
     if (rareCount > 1) {
-        setError(new Error("Cannot have more than one rare (red) letter"));
+        setError(new Error(`Cannot have more than one rare/red letter (${rareLetters})`));
         return true;
     }
     return false; // Passes all letter rules
@@ -129,7 +129,8 @@ function App() {
                   <a href="https://www.allplay.com/board-games/a-message-from-the-stars/">Message From The Stars</a> is a word game equal parts logic puzzle and deductive reasoning.<br/>
                   This tool can help you play more effectively as the alien or human player.<br/>
                   As the alien player, enter in your letter grid and key words and we'll suggest possible clues for you to give your humans.<br/>
-                  As the human player, enter in the words and grades that you have so far and we'll eliminate impossible letters so you don't have to second guess.
+                  As the human player, enter in the words and grades that you have so far and we'll eliminate impossible letters so you don't have to second guess.<br/>
+                  To learn how to play, you should <a href="https://allplay.com/files/biuv286z/production/156be91ecaafcceb20382fa14d7195293e0928c9.pdf">read the rules</a>.
                 </p>
               </div>
             </div>
@@ -170,7 +171,7 @@ function App() {
             </div>
             <hr/>
             <div className="strategy">
-              <p>To play super strategically, you may choose to the other side of this program during play for additional information.</p>
+              <p>To play super strategically, you may choose to use the other side of this program during play for additional information.</p>
               <p>As an alien player, you might migrate to the human side to figure out what the information you've given has proved or disproved so far (and what areas need more attention).</p>
               <p>As a human player, you might migrate to the alien side with your favorite currently legal combination and your own keywords for suggested that can prove or disprove your hunch</p>
             </div>

@@ -157,7 +157,7 @@ function ClueWordInputSet({ humanWords, humanGrades, letterData, onWordsChange, 
               <br/>If the total combinations reduces to zero, you may need to deselect some chosen letters.
             </p>
             
-            <div className="row">
+            <div className="build-a-guess row">
               {letterData.possible_letters && Array.from({ length: 6 }).map((_, index) => (
                 <div key={index} className="col-2 mb-2">
                   <label className="form-label">Pos {index + 1}:</label>
