@@ -7,3 +7,4 @@ httpx==0.24.1
 anyio==3.7.1
 httpcore
 werkzeug==2.0.1
+Flask-Limiter==3.5.0
