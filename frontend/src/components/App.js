@@ -116,7 +116,7 @@ function App() {
 
 
   return (
-      <div className={`full-body ${getCSSBodyClass()}`}>
+    <div className={`full-body ${getCSSBodyClass()}`}>
 
       {/* Landing Page - shown when no mode is selected */}
       {!currentViewingPlayerMode && (
@@ -304,7 +304,16 @@ function App() {
           </div>
         </div>
       )}
+      <hr/>
+      <footer class="center">
+        <p>You may post bug reports and feature requests on <a href="https://github.com/swordgeo/Message-From-The-Stars">GitHub</a>.</p>
+        <p>You can also contact me through Reddit: <a href="https://reddit.com/user/swordgeo/" title="Reddit"><img loading="lazy" src="https://1000logos.net/wp-content/uploads/2017/05/Reddit-icon-4.png" alt="Reddit icon" width="24" height="24"></img></a></p>
+        <p>If you'd like you can <a href="https://buymeacoffee.com/swordgeo">Buy Me a Coffee</a>.</p>
+        <p>"A Message From The Stars" is a board game by Allplay. This is an unofficial fan-made tool and is not affiliated with or endorsed by Allplay. <br/>
+        All game concepts and mechanics are the property of their respective owners.</p>
+      </footer>
     </div>
+    
   );
 }
         
