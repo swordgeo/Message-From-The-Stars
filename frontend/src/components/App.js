@@ -126,7 +126,7 @@ function App() {
               <div className="col-12">
                 <h1 className="text-center mb-4">Message From The Stars Helper</h1>
                 <p className="text-center">
-                  <a href="https://www.allplay.com/board-games/a-message-from-the-stars/">Message From The Stars</a> is a word game equal parts logic puzzle and deductive reasoning.<br/>
+                  <a href="https://www.allplay.com/board-games/a-message-from-the-stars/">A Message From The Stars</a> is a word game equal parts logic puzzle and deductive reasoning.<br/>
                   This tool can help you play more effectively as the alien or human player.<br/>
                   As the alien player, enter in your letter grid and key words and we'll suggest possible clues for you to give your humans.<br/>
                   As the human player, enter in the words and grades that you have so far and we'll eliminate impossible letters so you don't have to second guess.<br/>
@@ -173,7 +173,7 @@ function App() {
             <div className="strategy">
               <p>To play super strategically, you may choose to use the other side of this program during play for additional information.</p>
               <p>As an alien player, you might migrate to the human side to figure out what the information you've given has proved or disproved so far (and what areas need more attention).</p>
-              <p>As a human player, you might migrate to the alien side with your favorite currently legal combination and your own keywords for suggested that can prove or disprove your hunch</p>
+              <p>As a human player, you might migrate to the alien side with your favorite plausible combination and your own keywords for suggested words that can prove or disprove your hunch.</p>
             </div>
           </div>
         </header>
@@ -306,10 +306,9 @@ function App() {
       )}
       <hr/>
       <footer class="center">
-        <p>You may post bug reports and feature requests on <a href="https://github.com/swordgeo/Message-From-The-Stars">GitHub</a>.</p>
-        <p>You can also contact me through Reddit: <a href="https://reddit.com/user/swordgeo/" title="Reddit"><img loading="lazy" src="https://1000logos.net/wp-content/uploads/2017/05/Reddit-icon-4.png" alt="Reddit icon" width="24" height="24"></img></a></p>
-        <p>If you'd like you can <a href="https://buymeacoffee.com/swordgeo">Buy Me a Coffee</a>.</p>
-        <p>"A Message From The Stars" is a board game by Allplay. This is an unofficial fan-made tool and is not affiliated with or endorsed by Allplay. <br/>
+        <p>To contact me or share any issues visit <a href="https://linktr.ee/swordgeo">Linktree</a>.</p>
+        <p>Message From The Stars Helper can be supported via <a href="https://buymeacoffee.com/swordgeo">Buy Me a Coffee</a>.</p>
+        <p>"A Message From The Stars" is a board game by <a href="https://www.allplay.com/board-games/a-message-from-the-stars/">Allplay</a>. This is an unofficial fan-made tool and is not affiliated with or endorsed by Allplay. <br/>
         All game concepts and mechanics are the property of their respective owners.</p>
       </footer>
     </div>
