@@ -3,6 +3,7 @@ import http.client
 import json
 from openai import OpenAI
 import os
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from dotenv import load_dotenv
 load_dotenv()
@@ -274,16 +275,43 @@ def process_words(comma_separated_provided_words):
     collected_suggestions = []  # List to store the successfully collected words
     provided_word_array = [word.lower() for word in comma_separated_provided_words.split(',')]
 
-    for word in provided_word_array:
-        chatgpt_suggestions = get_chatgpt_suggestions(word)
-        chatgpt_suggestions = [item.lower().strip() for item in chatgpt_suggestions]
-        # synonym_suggestions = get_synonyms(word) # we might keep this one out - it's suggestions are just bad
-        association_suggestions = get_word_associations(word)
-        association_suggestions = [item.lower().strip() for item in association_suggestions]
+    results = {}
 
-        collected_suggestions.append((word, chatgpt_suggestions + association_suggestions))   
-    # print(collected_words)
+    # We run these things in parallel to reduce total runtime
+    # max_workers will increase by 3 for each subsequent API call we make per word.
+    with ThreadPoolExecutor(max_workers=6) as executor:
+        
+      future_to_task = {}
+
+      for word in provided_word_array:
+        future_gpt = executor.submit(get_chatgpt_suggestions, word)
+        future_to_task[future_gpt] = ('gpt', word)
+
+        future_assoc = executor.submit(get_word_associations, word)
+        future_to_task[future_assoc] = ('assoc', word)
+
+      # Collect results as they complete
+      for future in as_completed(future_to_task):
+        task_type, word = future_to_task[future]
+        try:
+          result = future.result()
+          result = [item.lower().strip() for item in result]
+
+          if word not in results:
+            results[word] = {'gpt': [], 'assoc': []}
+          results[word][task_type] = result
+        except Exception as e:
+          print(f"Error in {task_type} for '{word}: {e}")
+          if word not in results:
+            results[word] = {'gpt': [], 'assoc': []}
+
+    #Combine results in orginal word order
+    for word in provided_word_array:
+      word_results = results.get(word, {'gpt': [], 'assoc': []})
+      collected_suggestions.append((word, word_results['gpt'] + word_results['assoc']))
+
     return collected_suggestions
+
 
 if __name__ == '__main__':
     print(produce_suggestions("p,e,x,i,y,r", "robes"))
